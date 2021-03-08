@@ -1,0 +1,67 @@
+{
+  "name": "jsonc-simple-parser",
+  "description": "A simple JSON parser that supports comments and optional trailing commas.",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "benchmark": "node tasks/benchmark.js",
+    "clean": "rimraf dist",
+    "compile": "tsc --skipLibCheck && tstei",
+    "compile:watch": "tsc --skipLibCheck --watch",
+    "test:test262:init": "git clone git@github.com:tc39/test262.git ./test/test262",
+    "test:test262:prelude": "{ echo 'var module = {}, exports = {};' && esbuild dist/index.js --bundle --format=cjs --minify --target=es2016 && echo 'JSON.parse=exports.default.parse;' } > test/test262/prelude.js",
+    "test:test262:run": "test262-harness -t 8 --prelude ./test/test262/prelude.js ./test/test262/test/built-ins/JSON/parse/*.js",
+    "test:test262": "npm run test:test262:prelude && npm run test:test262:run",
+    "test:lib": "ava",
+    "test:lib:watch": "ava --watch",
+    "test": "npm run test:test262 && npm run test:lib",
+    "prepublishOnly": "npm run clean && npm run compile && npm run test"
+  },
+  "ava": {
+    "files": [
+      "test/index.js"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/fabiospampinato/jsonc-simple-parser/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Fabio Spampinato",
+    "email": "spampinabio@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabiospampinato/jsonc-simple-parser.git"
+  },
+  "keywords": [
+    "jsonc",
+    "json",
+    "comments",
+    "trailing commas",
+    "commas",
+    "parser",
+    "parse",
+    "stringify",
+    "tiny",
+    "simple"
+  ],
+  "dependencies": {
+    "reghex": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.32",
+    "ava": "^2.4.0",
+    "ava-spec": "^1.1.1",
+    "benchloop": "^1.3.2",
+    "esbuild": "^0.8.57",
+    "json5": "^2.2.0",
+    "jsonc-parser": "^3.0.0",
+    "nyc": "^15.1.0",
+    "rimraf": "^3.0.2",
+    "test262-harness": "^7.5.2",
+    "typescript": "^4.2.3",
+    "typescript-transform-export-interop": "^1.0.2"
+  }
+}
