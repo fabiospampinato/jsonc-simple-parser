@@ -43,12 +43,12 @@ const grammar = () => {
   /* NUMBER LITERAL */
 
   const NumberLiteral
-    = /[-+]?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][-+]?\d+)?/;
+    = /-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][-+]?\d+)?/;
 
   /* STRING LITERAL */
 
   const StringLiteral
-    = /"(?:[^\0-\x1F\\"]+|\\["bfnrt\\/]|\\u[0-9a-fA-F]{4})*"/;
+    = /"(?:[^\u0000-\u001F\\"]+|\\["bfnrt\\/]|\\u[0-9a-fA-F]{4})*"/;
 
   /* ARRAY LITERAL */
 
