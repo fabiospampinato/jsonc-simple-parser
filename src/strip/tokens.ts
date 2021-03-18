@@ -1,6 +1,7 @@
 
 /* IMPORT */
 
+import Context from './context';
 import {StripTokensMap} from '../types';
 
 /* TOKENS */
@@ -11,13 +12,16 @@ const Tokens: StripTokensMap = {
     throw new SyntaxError ( 'Unexpected end of JSONC input' );
   },
   Invalid: ( values: [string] ): never => {
-    throw new SyntaxError ( `Unexpected token ${values[0]} in JSONC` );
+    throw new SyntaxError ( `Unexpected token ${values[0]} in JSONC at position ${Context.offset}` );
   },
-  Delete: (): string => {
+  Delete: ( values: [string] ): string => {
+    Context.offset += values[0].length;
     return '';
   },
   Passthrough: ( values: string[] ): string => {
-    return values.join ( '' );
+    const source = values.join ( '' );
+    Context.offset += source.length;
+    return source;
   }
 };
 

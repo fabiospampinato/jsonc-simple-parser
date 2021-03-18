@@ -23,8 +23,8 @@ describe ( 'JSONC', () => {
 
       const {prefix, suffix} = Fixtures.errors;
 
-      t.throws ( () => JSONC.ast.parse ( prefix ), SyntaxError, 'Unexpected token i in JSONC' );
-      t.throws ( () => JSONC.ast.parse ( suffix ), SyntaxError, 'Unexpected token i in JSONC' );
+      t.throws ( () => JSONC.ast.parse ( prefix ), { instanceOf: SyntaxError, message: 'Unexpected token i in JSONC at position 0' } );
+      t.throws ( () => JSONC.ast.parse ( suffix ), { instanceOf: SyntaxError, message: 'Unexpected token i in JSONC at position 4' } );
 
     });
 
@@ -32,8 +32,8 @@ describe ( 'JSONC', () => {
 
       const {comment, empty} = Fixtures.errors;
 
-      t.throws ( () => JSONC.ast.parse ( comment ), SyntaxError, 'Unexpected end of JSONC input' );
-      t.throws ( () => JSONC.ast.parse ( empty ), SyntaxError, 'Unexpected end of JSONC input' );
+      t.throws ( () => JSONC.ast.parse ( comment ), { instanceOf: SyntaxError, message: 'Unexpected end of JSONC input' } );
+      t.throws ( () => JSONC.ast.parse ( empty ), { instanceOf: SyntaxError, message: 'Unexpected end of JSONC input' } );
 
     });
 
@@ -141,8 +141,8 @@ describe ( 'JSONC', () => {
 
       const {prefix, suffix} = Fixtures.errors;
 
-      t.throws ( () => JSONC.lookup ( prefix ), SyntaxError, 'Unexpected token i in JSONC' );
-      t.throws ( () => JSONC.lookup ( suffix ), SyntaxError, 'Unexpected token i in JSONC' );
+      t.throws ( () => JSONC.lookup ( prefix, 0, false ), { instanceOf: SyntaxError, message: 'Unexpected token i in JSONC at position 0' } );
+      t.throws ( () => JSONC.lookup ( suffix, 0, false ), { instanceOf: SyntaxError, message: 'Unexpected token i in JSONC at position 4' } );
 
     });
 
@@ -150,8 +150,8 @@ describe ( 'JSONC', () => {
 
       const {comment, empty} = Fixtures.errors;
 
-      t.throws ( () => JSONC.lookup ( comment ), SyntaxError, 'Unexpected end of JSONC input' );
-      t.throws ( () => JSONC.lookup ( empty ), SyntaxError, 'Unexpected end of JSONC input' );
+      t.throws ( () => JSONC.lookup ( comment, 0, false ), { instanceOf: SyntaxError, message: 'Unexpected end of JSONC input' } );
+      t.throws ( () => JSONC.lookup ( empty, 0, false ), { instanceOf: SyntaxError, message: 'Unexpected end of JSONC input' } );
 
     });
 
@@ -171,8 +171,8 @@ describe ( 'JSONC', () => {
 
       const {prefix, suffix} = Fixtures.errors;
 
-      t.throws ( () => JSONC.parse ( prefix ), SyntaxError, 'Unexpected token i in JSONC' );
-      t.throws ( () => JSONC.parse ( suffix ), SyntaxError, 'Unexpected token i in JSONC' );
+      t.throws ( () => JSONC.parse ( prefix ), { instanceOf: SyntaxError, message: 'Unexpected token i in JSONC at position 0' } );
+      t.throws ( () => JSONC.parse ( suffix ), { instanceOf: SyntaxError, message: 'Unexpected token i in JSONC at position 4' } );
 
     });
 
@@ -180,8 +180,8 @@ describe ( 'JSONC', () => {
 
       const {comment, empty} = Fixtures.errors;
 
-      t.throws ( () => JSONC.parse ( comment ), SyntaxError, 'Unexpected end of JSONC input' );
-      t.throws ( () => JSONC.parse ( empty ), SyntaxError, 'Unexpected end of JSONC input' );
+      t.throws ( () => JSONC.parse ( comment ), { instanceOf: SyntaxError, message: 'Unexpected end of JSONC input' } );
+      t.throws ( () => JSONC.parse ( empty ), { instanceOf: SyntaxError, message: 'Unexpected end of JSONC input' } );
 
     });
 
@@ -214,8 +214,8 @@ describe ( 'JSONC', () => {
 
       const {prefix, suffix} = Fixtures.errors;
 
-      t.throws ( () => JSONC.strip ( prefix ), SyntaxError, 'Unexpected token i in JSONC' );
-      t.throws ( () => JSONC.strip ( suffix ), SyntaxError, 'Unexpected token i in JSONC' );
+      t.throws ( () => JSONC.strip ( prefix ), { instanceOf: SyntaxError, message: 'Unexpected token i in JSONC at position 0' } );
+      t.throws ( () => JSONC.strip ( suffix ), { instanceOf: SyntaxError, message: 'Unexpected token i in JSONC at position 4' } );
 
     });
 
@@ -223,8 +223,8 @@ describe ( 'JSONC', () => {
 
       const {comment, empty} = Fixtures.errors;
 
-      t.throws ( () => JSONC.strip ( comment ), SyntaxError, 'Unexpected end of JSONC input' );
-      t.throws ( () => JSONC.strip ( empty ), SyntaxError, 'Unexpected end of JSONC input' );
+      t.throws ( () => JSONC.strip ( comment ), { instanceOf: SyntaxError, message: 'Unexpected end of JSONC input' } );
+      t.throws ( () => JSONC.strip ( empty ), { instanceOf: SyntaxError, message: 'Unexpected end of JSONC input' } );
 
     });
 

@@ -3,11 +3,27 @@
 
 import {ParseTokensMap, ChildToken, ParentToken, NewlineToken, WhitespaceToken, CommentLineToken, CommentBlockToken, CommaToken, CommaTrailingToken, ColonToken, NullToken, TrueToken, FalseToken, NumberToken, StringToken, ArrayOpenToken, ArrayCloseToken, ArrayToken, ObjectOpenToken, ObjectCloseToken, ObjectToken, RootToken, Token} from '../types';
 import Utils from '../utils';
+import Context from './context';
 
 /* HELPERS */
 
-const makeChild = <T extends ChildToken> ( type: string ) => ( values: [string] ): T => ({ type, source: values[0] }) as any, //TSC
-      makeParent = <T extends ParentToken> ( type: string ) => ( values: (Token | Token[])[] ): T => ({ type, children: values.flat () }) as any; //TSC
+const makeChild = <T extends ChildToken> ( type: string ) => ( values: [string] ): T => {
+
+  const source = values[0];
+
+  Context.offset += source.length;
+
+  return {type, source} as T;
+
+};
+
+const makeParent = <T extends ParentToken> ( type: string ) => ( values: (Token | Token[])[] ): T => {
+
+  const children = values.flat ();
+
+  return {type, children} as T;
+
+};
 
 /* TOKENS */
 
@@ -17,7 +33,7 @@ const Tokens: ParseTokensMap = {
     throw new SyntaxError ( 'Unexpected end of JSONC input' );
   },
   Invalid: ( values: [string] ): never => {
-    throw new SyntaxError ( `Unexpected token ${values[0]} in JSONC` );
+    throw new SyntaxError ( `Unexpected token ${values[0]} in JSONC at position ${Context.offset}` );
   },
   Passthrough: ( values: (string | string[] | Token | Token[])[] ): Token[] => {
     return values.flat ().filter ( Utils.isToken );
