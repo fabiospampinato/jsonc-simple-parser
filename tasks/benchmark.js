@@ -19,59 +19,103 @@ benchmark.defaultOptions = Object.assign ( benchmark.defaultOptions, {
   log: 'compact'
 });
 
-benchmark.group ( 'With Comments', () => {
+benchmark.group ( 'Parse', () => {
 
-  benchmark ({
-    name: 'JSONC.parse',
-    fn: () => {
-      JSONC.parse ( sampleWithComments );
-    }
+  benchmark.group ( 'With Comments', () => {
+
+    benchmark ({
+      name: 'JSONC.parse',
+      fn: () => {
+        JSONC.parse ( sampleWithComments );
+      }
+    });
+
+    benchmark ({
+      name: 'JSONC.parse (VSC)',
+      fn: () => {
+        VSCJSONC.parse ( sampleWithComments );
+      }
+    });
+
+    benchmark ({
+      name: 'JSON5.parse',
+      fn: () => {
+        JSON5.parse ( sampleWithComments );
+      }
+    });
+
   });
 
-  benchmark ({
-    name: 'JSONC.parse (VSC)',
-    fn: () => {
-      VSCJSONC.parse ( sampleWithComments );
-    }
-  });
+  benchmark.group ( 'Without Comments', () => {
 
-  benchmark ({
-    name: 'JSON5.parse',
-    fn: () => {
-      JSON5.parse ( sampleWithComments );
-    }
+    benchmark ({
+      name: 'JSONC.parse',
+      fn: () => {
+        JSONC.parse ( sampleWithoutComments );
+      }
+    });
+
+    benchmark ({
+      name: 'JSONC.parse (VSC)',
+      fn: () => {
+        VSCJSONC.parse ( sampleWithoutComments );
+      }
+    });
+
+    benchmark ({
+      name: 'JSON5.parse',
+      fn: () => {
+        JSON5.parse ( sampleWithoutComments );
+      }
+    });
+
+    benchmark ({
+      name: 'JSON.parse',
+      fn: () => {
+        JSON.parse ( sampleWithoutComments );
+      }
+    });
+
   });
 
 });
 
-benchmark.group ( 'Without Comments', () => {
+benchmark.group ( 'Lookup', () => {
 
-  benchmark ({
-    name: 'JSONC.parse',
-    fn: () => {
-      JSONC.parse ( sampleWithoutComments );
-    }
+  benchmark.group ( 'With Comments', () => {
+
+    benchmark ({
+      name: 'JSONC.lookup',
+      fn: () => {
+        JSONC.lookup ( sampleWithComments, 41111 );
+      }
+    });
+
+    benchmark ({
+      name: 'JSONC.lookup (VSC)',
+      fn: () => {
+        VSCJSONC.getLocation ( sampleWithComments, 41111 )
+      }
+    });
+
   });
 
-  benchmark ({
-    name: 'JSONC.parse (VSC)',
-    fn: () => {
-      VSCJSONC.parse ( sampleWithoutComments );
-    }
-  });
+  benchmark.group ( 'Without Comments', () => {
 
-  benchmark ({
-    name: 'JSON5.parse',
-    fn: () => {
-      JSON5.parse ( sampleWithoutComments );
-    }
-  });
+    benchmark ({
+      name: 'JSONC.lookup',
+      fn: () => {
+        JSONC.lookup ( sampleWithoutComments, 41111 );
+      }
+    });
 
-  benchmark ({
-    name: 'JSON.parse',
-    fn: () => {
-      JSON.parse ( sampleWithoutComments );
-    }
+    benchmark ({
+      name: 'JSONC.lookup (VSC)',
+      fn: () => {
+        VSCJSONC.getLocation ( sampleWithoutComments, 41111 )
+      }
+    });
+
   });
 
 });
