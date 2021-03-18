@@ -28,6 +28,9 @@ const makeParent = <T extends ParentToken> ( type: string ) => ( values: (Token 
 /* TOKENS */
 
 const Tokens: ParseTokensMap = {
+  EarlyReturn: (): [] | undefined => {
+    if ( Context.offset > Context.offsetMax ) return [];
+  },
   Insufficient: ( values: [string] ): never => {
     if ( values[0].length ) Tokens.Invalid ( values );
     throw new SyntaxError ( 'Unexpected end of JSONC input' );

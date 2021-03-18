@@ -2,7 +2,8 @@
 /* CONTEXT */
 
 const Context = {
-  offset: 0
+  offset: 0,
+  offsetMax: Infinity
 };
 
 /* EXPORT */

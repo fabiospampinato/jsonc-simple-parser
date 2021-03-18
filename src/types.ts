@@ -109,7 +109,7 @@ type AST = RootToken;
 
 /* TOKENS MAPS */
 
-type ParseTokensType = 'Passthrough' | 'Insufficient' | 'Invalid' | 'Newline' | 'Whitespace' | 'CommentLine' | 'CommentBlock' | 'Comma' | 'CommaTrailing' | 'Colon' | 'Null' | 'True' | 'False' | 'Number' | 'String' | 'ArrayOpen' | 'ArrayClose' | 'Array' | 'ObjectOpen' | 'ObjectClose' | 'Object' | 'Root';
+type ParseTokensType = 'EarlyReturn' | 'Passthrough' | 'Insufficient' | 'Invalid' | 'Newline' | 'Whitespace' | 'CommentLine' | 'CommentBlock' | 'Comma' | 'CommaTrailing' | 'Colon' | 'Null' | 'True' | 'False' | 'Number' | 'String' | 'ArrayOpen' | 'ArrayClose' | 'Array' | 'ObjectOpen' | 'ObjectClose' | 'Object' | 'Root';
 type ParseTokensMap = Record<ParseTokensType, Function>;
 type ParseMatchersMap = Record<ParseTokensType, Matcher>;
 

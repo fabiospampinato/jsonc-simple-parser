@@ -12,6 +12,11 @@ const grammar = ( tokens: ParseTokensMap ) => {
 
   const $ = Utils.tokens2matchers <ParseTokensMap, ParseMatchersMap> ( tokens );
 
+  /* EARLY RETURN */
+
+  const EarlyReturn
+    = $.EarlyReturn`${''}`;
+
   /* INSUFFICIENT */
 
   const Insufficient
@@ -93,10 +98,10 @@ const grammar = ( tokens: ParseTokensMap ) => {
     = $.Passthrough`${_} ${() => Literal} ${_}`;
 
   const ArrayMembers
-    = $.Passthrough`${ArrayMember} (${Comma} ${ArrayMember})* ${CommaTrailing}?`;
+    = $.Passthrough`${ArrayMember} (!${EarlyReturn} ${Comma} ${ArrayMember})* ${CommaTrailing}?`;
 
   const Array
-    = $.Array`${ArrayOpen} ${_} ${ArrayMembers}? ${_} ${ArrayClose}`;
+    = $.Array`${ArrayOpen} ${_} ${ArrayMembers}? ${_} (${EarlyReturn} | ${ArrayClose})`;
 
   /* OBJECT */
 
@@ -110,10 +115,10 @@ const grammar = ( tokens: ParseTokensMap ) => {
     = $.Passthrough`${_} ${String} ${_} ${Colon} ${_} ${() => Literal} ${_}`;
 
   const ObjectMembers
-    = $.Passthrough`${ObjectMember} (${Comma} ${ObjectMember})* ${CommaTrailing}?`;
+    = $.Passthrough`${ObjectMember} (!${EarlyReturn} ${Comma} ${ObjectMember})* ${CommaTrailing}?`;
 
   const Object
-    = $.Object`${ObjectOpen} ${_} ${ObjectMembers}? ${_} ${ObjectClose}`;
+    = $.Object`${ObjectOpen} ${_} ${ObjectMembers}? ${_} (${EarlyReturn} | ${ObjectClose})`;
 
   /* LITERAL */
 
@@ -123,7 +128,7 @@ const grammar = ( tokens: ParseTokensMap ) => {
   /* ROOT */
 
   const Root
-    = $.Root`${_} (${Literal} | ${Insufficient}) ${_} ${Invalid}?`;
+    = $.Root`${_} (${Literal} | ${Insufficient}) (${EarlyReturn} | ${_} ${Invalid}?)`;
 
   /* RETURN */
 
