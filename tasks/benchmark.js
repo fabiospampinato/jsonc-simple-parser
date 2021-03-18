@@ -82,25 +82,25 @@ benchmark.group ( 'Parse', () => {
 
 benchmark.group ( 'Lookup', () => {
 
-  benchmark.group ( 'With Comments', () => {
+  benchmark.group ( 'Start', () => {
 
     benchmark ({
       name: 'JSONC.lookup',
       fn: () => {
-        JSONC.lookup ( sampleWithComments, 41111 );
+        JSONC.lookup ( sampleWithoutComments, 150 );
       }
     });
 
     benchmark ({
       name: 'JSONC.lookup (VSC)',
       fn: () => {
-        VSCJSONC.getLocation ( sampleWithComments, 41111 )
+        VSCJSONC.getLocation ( sampleWithoutComments, 150 )
       }
     });
 
   });
 
-  benchmark.group ( 'Without Comments', () => {
+  benchmark.group ( 'Middle', () => {
 
     benchmark ({
       name: 'JSONC.lookup',
@@ -113,6 +113,24 @@ benchmark.group ( 'Lookup', () => {
       name: 'JSONC.lookup (VSC)',
       fn: () => {
         VSCJSONC.getLocation ( sampleWithoutComments, 41111 )
+      }
+    });
+
+  });
+
+  benchmark.group ( 'End', () => {
+
+    benchmark ({
+      name: 'JSONC.lookup',
+      fn: () => {
+        JSONC.lookup ( sampleWithoutComments, 92900 );
+      }
+    });
+
+    benchmark ({
+      name: 'JSONC.lookup (VSC)',
+      fn: () => {
+        VSCJSONC.getLocation ( sampleWithoutComments, 92900 )
       }
     });
 

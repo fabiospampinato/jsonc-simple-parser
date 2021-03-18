@@ -145,11 +145,13 @@ const getLookupProperty = ( token: LookupChildToken | null, isInsideProperty: bo
 
 };
 
-const getLookupValue = ( token: LookupChildToken | null, isInsideValue: boolean ): JSONValue | undefined => {
+const getLookupValue = ( token: LookupChildToken | null, isInsideValue: boolean, usePartialScanning: boolean ): JSONValue | undefined => {
 
   if ( !isInsideValue || !token ) return;
 
   if ( Utils.isTokenLiteral ( token ) ) return parse ( detokenize ( token ) );
+
+  if ( usePartialScanning ) return;
 
   const {parent} = token;
 
@@ -161,15 +163,16 @@ const getLookupValue = ( token: LookupChildToken | null, isInsideValue: boolean 
 
 };
 
-const lookup = ( text: string, position: number ): LookupResult => {
+const lookup = ( text: string, position: number, usePartialScanning: boolean = true ): LookupResult => {
 
-  const ast = tokenize ( text ),
+  const limit = usePartialScanning ? position : Infinity,
+        ast = tokenize ( text, limit ),
         token = getLookupToken ( ast, position ),
         path = getLookupPath ( token ),
         isInsideProperty = getLookupIsInsideProperty ( token ),
         isInsideValue = getLookupIsInsideValue ( token ),
         property = getLookupProperty ( token, isInsideProperty ),
-        value = getLookupValue ( token, isInsideValue ),
+        value = getLookupValue ( token, isInsideValue, usePartialScanning ),
         result: LookupResult = {path, property, value, isInsideProperty, isInsideValue};
 
   return result;
