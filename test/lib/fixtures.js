@@ -541,12 +541,13 @@ const Fixtures = {
     input: `
       { // This is an example // Example
         "foo" : 123,
+        "// tricky": "/* tricky */",
         /* TRAILING COMMAS BELOW */ /* EXAMPLE */
         "bar": [1, 2 , 3,],
         /* TRAILING COMMAS ABOVE */
       }
     `,
-    output: '{"foo":123,"bar":[1,2,3]}'
+    output: '{"foo":123,"// tricky":"/* tricky */","bar":[1,2,3]}'
   }
 };
 
