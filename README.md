@@ -5,13 +5,13 @@ A simple JSON parser that supports comments and optional trailing commas.
 ## Features
 
 - **Tiny**:
-  - It's ~2.1kb minified and gzipped, if you aren't already using [RegHex](https://github.com/kitten/reghex), otherwise it's just ~.5kb.
-  - Even if you aren't using [RegHex](https://github.com/kitten/reghex) already (you should) that's ~60% smaller than VS Code's [jsonc-parser](https://www.npmjs.com/package/jsonc-parser) and ~80% smaller than [JSON5](https://www.npmjs.com/package/json5).
+  - It's ~3.5kb minified and gzipped, if you aren't already using [RegHex](https://github.com/kitten/reghex), otherwise it's just ~2kb.
+  - Even if you aren't using [RegHex](https://github.com/kitten/reghex) already (you should) that's ~32% smaller than VS Code's [jsonc-parser](https://www.npmjs.com/package/jsonc-parser) and ~62% smaller than [JSON5](https://www.npmjs.com/package/json5).
 - **Performant**:
   - When parsing regular JSON it's ~10x faster than VS Code's [jsonc-parser](https://www.npmjs.com/package/jsonc-parser), ~70x faster than [JSON5](https://www.npmjs.com/package/json5) and just as fast as the native `JSON.parse`.
   - When parsing JSON with comments or trailing commas it's just as fast as VS Code's [jsonc-parser](https://www.npmjs.com/package/jsonc-parser) and ~6x faster than [JSON5](https://www.npmjs.com/package/json5).
 - **Tested**:
-  - It passes all 144 tests regarding JSON from ECMA's [test262](https://github.com/tc39/test262) test suite.
+  - It passes all 274 tests regarding JSON from ECMA's [test262](https://github.com/tc39/test262) test suite.
   - The parser is obviously not spec compliant but this means that while adding support for comments and trailing commas probably nothing else got broken.
 
 ## Install

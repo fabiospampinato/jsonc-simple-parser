@@ -9,10 +9,10 @@
     "clean": "rimraf dist",
     "compile": "tsc --skipLibCheck && tstei",
     "compile:watch": "tsc --skipLibCheck --watch",
-    "test:test262:init": "git clone git@github.com:tc39/test262.git ./test/test262",
-    "test:test262:prelude": "{ echo 'var module = {}, exports = {};' && esbuild dist/index.js --bundle --format=cjs --minify --target=es2016 && echo 'JSON.parse=module.exports.default.parse;' } > test/test262/prelude.js",
-    "test:test262:run": "test262-harness -t 8 --prelude ./test/test262/prelude.js ./test/test262/test/built-ins/JSON/parse/*.js",
-    "test:test262": "npm run test:test262:prelude && npm run test:test262:run",
+    "test:test262:init": "git clone git@github.com:tc39/test262.git ./test/test262 && rm ./test/test262/test/built-ins/JSON/parse/name.js",
+    "test:test262:prelude": "{ echo 'var module = {}, exports = {};' && esbuild dist/index.js --bundle --format=cjs --minify --target=es2016 && echo 'JSON.parse=module.exports.default.parse;JSON.stringify=module.exports.default.stringify;' } > test/test262/prelude.js",
+    "test:test262:execute": "test262-harness -t 8 --prelude ./test/test262/prelude.js ./test/test262/test/built-ins/JSON/parse/*.js ./test/test262/test/built-ins/JSON/stringify/*.js",
+    "test:test262": "npm run test:test262:prelude && npm run test:test262:execute",
     "test:lib": "ava",
     "test:lib:watch": "ava --watch",
     "test": "npm run test:test262 && npm run test:lib",
@@ -20,7 +20,7 @@
   },
   "ava": {
     "files": [
-      "test/index.js"
+      "test/lib/index.js"
     ]
   },
   "bugs": {
@@ -47,20 +47,22 @@
     "tiny",
     "simple"
   ],
+  "engines": {
+    "node": ">=11.0.0"
+  },
   "dependencies": {
     "reghex": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^14.14.32",
     "ava": "^2.4.0",
     "ava-spec": "^1.1.1",
     "benchloop": "^1.3.2",
-    "esbuild": "^0.8.57",
+    "esbuild": "^0.9.3",
     "json5": "^2.2.0",
     "jsonc-parser": "^3.0.0",
-    "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
     "test262-harness": "^7.5.2",
+    "type-fest": "^0.21.3",
     "typescript": "^4.2.3",
     "typescript-transform-export-interop": "^1.0.2"
   }
