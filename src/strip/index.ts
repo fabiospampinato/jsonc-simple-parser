@@ -1,14 +1,14 @@
 
 /* IMPORT */
 
-import Context from './context';
+import Context from '../tokenize/context';
 import parser from './parser';
 
 /* STRIP */
 
 const strip = ( text: string ): string => {
 
-  Context.offset = 0;
+  Context.init ();
 
   return parser ( text );
 

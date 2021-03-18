@@ -5,7 +5,7 @@ A simple JSON parser that supports comments and optional trailing commas.
 ## Features
 
 - **Tiny**:
-  - It's ~3.6kb minified and gzipped, if you aren't already using [RegHex](https://github.com/kitten/reghex), otherwise it's just ~2kb.
+  - It's ~3.5kb minified and gzipped, if you aren't already using [RegHex](https://github.com/kitten/reghex), otherwise it's just ~2kb.
   - Even if you aren't using [RegHex](https://github.com/kitten/reghex) already (you should) that's ~32% smaller than VS Code's [jsonc-parser](https://www.npmjs.com/package/jsonc-parser) and ~62% smaller than [JSON5](https://www.npmjs.com/package/json5).
 - **Performant**:
   - When parsing regular JSON it's ~10x faster than VS Code's [jsonc-parser](https://www.npmjs.com/package/jsonc-parser), ~70x faster than [JSON5](https://www.npmjs.com/package/json5) and just as fast as the native `JSON.parse`.

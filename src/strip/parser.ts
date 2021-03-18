@@ -2,7 +2,7 @@
 /* IMPORT */
 
 import {parse} from 'reghex';
-import grammar from './grammar';
+import grammar from '../tokenize/grammar';
 import tokens from './tokens';
 
 /* PARSER */

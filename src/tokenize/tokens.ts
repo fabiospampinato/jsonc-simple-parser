@@ -8,21 +8,14 @@ import Context from './context';
 /* HELPERS */
 
 const makeChild = <T extends ChildToken> ( type: string ) => ( values: [string] ): T => {
-
   const source = values[0];
-
   Context.offset += source.length;
-
   return {type, source} as T;
-
 };
 
 const makeParent = <T extends ParentToken> ( type: string ) => ( values: (Token | Token[])[] ): T => {
-
   const children = values.flat ();
-
   return {type, children} as T;
-
 };
 
 /* TOKENS */

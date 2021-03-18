@@ -44,34 +44,41 @@ const grammar = ( tokens: ParseTokensMap ) => {
   const Trivia
     = $.Passthrough`${Newline} | ${Whitespace} | ${CommentLine} | ${CommentBlock}`;
 
-  const _
+  /* _ */
+
+  const _Separated
     = $.Passthrough`${Trivia}*`;
+
+  const _Merged
+    = $.Whitespace`${/(?:[ \t\r\n]+|\/\/.*|\/\*[^]*?\*\/)*/}`;
+
+  const _ = $.Newline === $.Whitespace && $.Whitespace === $.CommentLine && $.CommentLine === $.CommentBlock ? _Merged : _Separated;
 
   /* COMMA */
 
   const Comma
-    = $.Comma`${/,/}`;
+    = $.Comma`${','}`;
 
   const CommaTrailing
-    = $.CommaTrailing`${/,/}`;
+    = $.CommaTrailing`${','}`;
 
   /* COLON */
 
   const Colon
-    = $.Colon`${/:/}`;
+    = $.Colon`${':'}`;
 
   /* NULL */
 
   const Null
-    = $.Null`${/null/}`;
+    = $.Null`${'null'}`;
 
   /* BOOLEAN */
 
   const True
-    = $.True`${/true/}`;
+    = $.True`${'true'}`;
 
   const False
-    = $.False`${/false/}`;
+    = $.False`${'false'}`;
 
   const Boolean
     = $.Passthrough`${True} | ${False}`;
@@ -89,10 +96,10 @@ const grammar = ( tokens: ParseTokensMap ) => {
   /* ARRAY */
 
   const ArrayOpen
-    = $.ArrayOpen`${/\[/}`;
+    = $.ArrayOpen`${'['}`;
 
   const ArrayClose
-    = $.ArrayClose`${/\]/}`;
+    = $.ArrayClose`${']'}`;
 
   const ArrayMember
     = $.Passthrough`${_} ${() => Literal} ${_}`;
@@ -106,10 +113,10 @@ const grammar = ( tokens: ParseTokensMap ) => {
   /* OBJECT */
 
   const ObjectOpen
-    = $.ObjectOpen`${/{/}`;
+    = $.ObjectOpen`${'{'}`;
 
   const ObjectClose
-    = $.ObjectClose`${/}/}`;
+    = $.ObjectClose`${'}'}`;
 
   const ObjectMember
     = $.Passthrough`${_} ${String} ${_} ${Colon} ${_} ${() => Literal} ${_}`;

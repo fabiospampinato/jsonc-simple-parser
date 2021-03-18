@@ -7,10 +7,9 @@ import parser from './parser';
 
 /* TOKENIZE */
 
-const tokenize = ( text: string, limit: number = Infinity ): AST => {
+const tokenize = ( text: string, limit?: number ): AST => {
 
-  Context.offset = 0;
-  Context.offsetMax = limit;
+  Context.init ( limit );
 
   return parser ( text );
 

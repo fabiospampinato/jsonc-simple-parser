@@ -60,7 +60,21 @@ const Utils = {
 
   tokens2matchers: <Tokens, Matchers> ( tokens: Tokens ): Matchers => {
 
-    return Object.keys ( tokens ).reduce ( ( acc, type ) => ( acc[type] = match ( type, tokens[type] ) ) && acc, {} );
+    const cache = new Map ();
+
+    return Object.keys ( tokens ).reduce ( ( acc, type ) => {
+
+      const transformer = tokens[type];
+
+      const matcher = transformer.unwrapped ? transformer : cache.get ( transformer ) || match ( type, transformer );
+
+      cache.set ( transformer, matcher );
+
+      acc[type] = matcher;
+
+      return acc;
+
+    }, {} as Matchers );
 
   }
 

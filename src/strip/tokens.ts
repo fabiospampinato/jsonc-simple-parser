@@ -1,28 +1,53 @@
 
 /* IMPORT */
 
-import Context from './context';
-import {StripTokensMap} from '../types';
+import {ParseTokensMap} from '../types';
+import Context from '../tokenize/context';
+import TokenizeTokens from '../tokenize/tokens';
+
+/* HELPERS */
+
+const Delete = ( values: [string] ): string => {
+  Context.offset += values[0].length;
+  return '';
+};
+
+const Passthrough = ( values: string[] ): string => {
+  const source = values.join ( '' );
+  Context.offset += source.length;
+  return source;
+};
+
+const Unwrapped = ( quasis: string[], token: RegExp | string ): RegExp | string => {
+  return token;
+};
+
+Unwrapped.unwrapped = true;
 
 /* TOKENS */
 
-const Tokens: StripTokensMap = {
-  Insufficient: ( values: [string] ): never => {
-    if ( values[0].length ) Tokens.Invalid ( values );
-    throw new SyntaxError ( 'Unexpected end of JSONC input' );
-  },
-  Invalid: ( values: [string] ): never => {
-    throw new SyntaxError ( `Unexpected token ${values[0]} in JSONC at position ${Context.offset}` );
-  },
-  Delete: ( values: [string] ): string => {
-    Context.offset += values[0].length;
-    return '';
-  },
-  Passthrough: ( values: string[] ): string => {
-    const source = values.join ( '' );
-    Context.offset += source.length;
-    return source;
-  }
+const Tokens: ParseTokensMap = {
+  ...TokenizeTokens,
+  Passthrough,
+  Newline: Delete,
+  Whitespace: Delete,
+  CommentLine: Delete,
+  CommentBlock: Delete,
+  Comma: Unwrapped,
+  CommaTrailing: Delete,
+  Colon: Unwrapped,
+  Null: Unwrapped,
+  True: Unwrapped,
+  False: Unwrapped,
+  Number: Unwrapped,
+  String: Unwrapped,
+  ArrayOpen: Unwrapped,
+  ArrayClose: Unwrapped,
+  Array: Passthrough,
+  ObjectOpen: Unwrapped,
+  ObjectClose: Unwrapped,
+  Object: Passthrough,
+  Root: Passthrough
 };
 
 /* EXPORT */

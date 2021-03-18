@@ -113,10 +113,6 @@ type ParseTokensType = 'EarlyReturn' | 'Passthrough' | 'Insufficient' | 'Invalid
 type ParseTokensMap = Record<ParseTokensType, Function>;
 type ParseMatchersMap = Record<ParseTokensType, Matcher>;
 
-type StripTokensType = 'Delete' | 'Passthrough' | 'Insufficient' | 'Invalid';
-type StripTokensMap = Record<StripTokensType, Function>;
-type StripMatchersMap = Record<StripTokensType, Matcher>;
-
 /* LOOKUP */
 
 type LookupChildToken = {
@@ -156,5 +152,5 @@ type LookupResult = {
 export {JSONValue};
 export {ChildToken, ParentToken, NewlineToken, WhitespaceToken, CommentLineToken, CommentBlockToken, CommaToken, CommaTrailingToken, ColonToken, NullToken, TrueToken, FalseToken, NumberToken, StringToken, ArrayOpenToken, ArrayCloseToken, ArrayToken, ObjectOpenToken, ObjectCloseToken, ObjectToken, RootToken};
 export {AbstractToken, IgnoredToken, LiteralToken, TriviaToken, OpenToken, CloseToken, DelimiterToken, SeparationToken, SpecialToken, Token, AST};
-export {ParseTokensMap, ParseMatchersMap, StripTokensMap, StripMatchersMap};
+export {ParseTokensMap, ParseMatchersMap};
 export {LookupChildToken, LookupParentToken, LookupToken, LookupPath, LookupResult};
