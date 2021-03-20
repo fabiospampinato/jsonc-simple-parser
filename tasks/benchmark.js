@@ -9,6 +9,8 @@ const fs = require ( 'fs' ),
       {default: JSONC} = require ( '../dist' ),
       sampleWithCommentsPath = path.resolve ( __dirname, 'sample_with_comments.json' ),
       sampleWithComments = fs.readFileSync ( sampleWithCommentsPath, 'utf8' ),
+      sampleWithErrorsPath = path.resolve ( __dirname, 'sample_with_errors.json' ),
+      sampleWithErrors = fs.readFileSync ( sampleWithErrorsPath, 'utf8' ),
       sampleWithoutCommentsPath = path.resolve ( __dirname, 'sample_without_comments.json' ),
       sampleWithoutComments = fs.readFileSync ( sampleWithoutCommentsPath, 'utf8' );
 
@@ -134,6 +136,31 @@ benchmark.group ( 'Lookup', () => {
       }
     });
 
+  });
+
+});
+
+benchmark.group ( 'Validate', () => {
+
+  benchmark ({
+    name: 'JSON',
+    fn: () => {
+      JSONC.validate ( sampleWithoutComments );
+    }
+  });
+
+  benchmark ({
+    name: 'JSONC',
+    fn: () => {
+      JSONC.validate ( sampleWithComments );
+    }
+  });
+
+  benchmark ({
+    name: 'Errors',
+    fn: () => {
+      JSONC.validate ( sampleWithErrors );
+    }
   });
 
 });

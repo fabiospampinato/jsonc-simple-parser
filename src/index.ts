@@ -7,6 +7,7 @@ import parse from './parse';
 import stringify from './stringify';
 import strip from './strip';
 import tokenize from './tokenize';
+import validate from './validate';
 
 /* EXPORT */
 
@@ -18,7 +19,8 @@ const JSONC = {
   lookup,
   parse,
   stringify,
-  strip
+  strip,
+  validate
 };
 
 /* EXPORT */

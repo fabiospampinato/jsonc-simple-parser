@@ -230,4 +230,34 @@ describe ( 'JSONC', () => {
 
   });
 
+  describe ( 'validate', it => {
+
+    it ( 'returns true for valid strings', t => {
+
+      const {input} = Fixtures.ast;
+
+      t.true ( JSONC.validate ( input ) );
+
+    });
+
+    it ( 'returns false on invalid input', t => {
+
+      const {prefix, suffix} = Fixtures.errors;
+
+      t.false ( JSONC.validate ( prefix ) );
+      t.false ( JSONC.validate ( suffix ) );
+
+    });
+
+    it ( 'returns false on insufficient input', t => {
+
+      const {comment, empty} = Fixtures.errors;
+
+      t.false ( JSONC.validate ( comment ) );
+      t.false ( JSONC.validate ( empty ) );
+
+    });
+
+  });
+
 });
