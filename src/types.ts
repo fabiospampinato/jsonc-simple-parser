@@ -139,10 +139,18 @@ type LookupToken = LookupChildToken | LookupParentToken;
 
 type LookupPath = (string | number)[];
 
+type LookupResultToken = {
+  type: ParseTokensType,
+  source: string,
+  start: number,
+  end: number
+};
+
 type LookupResult = {
   path: LookupPath,
   property: string | number | undefined,
   value: JSONValue | undefined,
+  token: LookupResultToken | undefined,
   isInsideProperty: boolean,
   isInsideValue: boolean
 };
@@ -153,4 +161,4 @@ export {JSONValue};
 export {ChildToken, ParentToken, NewlineToken, WhitespaceToken, CommentLineToken, CommentBlockToken, CommaToken, CommaTrailingToken, ColonToken, NullToken, TrueToken, FalseToken, NumberToken, StringToken, ArrayOpenToken, ArrayCloseToken, ArrayToken, ObjectOpenToken, ObjectCloseToken, ObjectToken, RootToken};
 export {AbstractToken, IgnoredToken, LiteralToken, TriviaToken, OpenToken, CloseToken, DelimiterToken, SeparationToken, SpecialToken, Token, AST};
 export {ParseTokensMap, ParseMatchersMap};
-export {LookupChildToken, LookupParentToken, LookupToken, LookupPath, LookupResult};
+export {LookupChildToken, LookupParentToken, LookupToken, LookupPath, LookupResultToken, LookupResult};

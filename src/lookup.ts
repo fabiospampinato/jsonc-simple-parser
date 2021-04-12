@@ -3,7 +3,7 @@
 
 import {JSONValue} from './types';
 import {ChildToken, ParentToken, AST} from './types';
-import {LookupChildToken, LookupParentToken, LookupPath, LookupResult} from './types';
+import {LookupChildToken, LookupParentToken, LookupPath, LookupResultToken, LookupResult} from './types';
 import detokenize from './detokenize';
 import parse from './parse';
 import tokenize from './tokenize';
@@ -173,7 +173,8 @@ const lookup = ( text: string, position: number, usePartialScanning: boolean = t
         isInsideValue = getLookupIsInsideValue ( token ),
         property = getLookupProperty ( token, isInsideProperty ),
         value = getLookupValue ( token, isInsideValue, usePartialScanning ),
-        result: LookupResult = {path, property, value, isInsideProperty, isInsideValue};
+        t = token ? { type: token.type, start: token.start, end: token.end, source: token.source } as LookupResultToken : undefined,
+        result: LookupResult = {path, property, value, token: t, isInsideProperty, isInsideValue};
 
   return result;
 
