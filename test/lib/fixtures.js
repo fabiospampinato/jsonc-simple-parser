@@ -494,6 +494,7 @@ const Fixtures = {
       // Example // Yes
       /* EXAMPLE */ /* YES */
     `,
+    objectPartial: `{ "foo" }`,
     array: `
       // Example // Yes
       /* EXAMPLE */ /* YES */

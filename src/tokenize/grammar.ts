@@ -119,7 +119,7 @@ const grammar = ( tokens: ParseTokensMap ) => {
     = $.ObjectClose`${'}'}`;
 
   const ObjectMember
-    = $.Passthrough`${_} ${String} ${_} ${Colon} ${_} ${() => Literal} ${_}`;
+    = $.Passthrough`${_} ${String} (${EarlyReturn} | ${_} ${Colon} ${_} ${() => Literal} ${_})`;
 
   const ObjectMembers
     = $.Passthrough`${ObjectMember} (!${EarlyReturn} ${Comma} ${ObjectMember})* ${CommaTrailing}?`;

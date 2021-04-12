@@ -54,7 +54,7 @@ describe ( 'JSONC', () => {
 
   describe ( 'lookup', it => {
 
-    it ( 'does something', t => {
+    it ( 'returns an object describing a location in a JSONC string', t => {
 
       const lookup = ( target, index, usePartialScanning ) => _.omit ( JSONC.lookup ( target, index, usePartialScanning ), ['token'] ); //TODO: Actually match against the token object too
 
@@ -137,6 +137,16 @@ describe ( 'JSONC', () => {
       t.deepEqual ( lookup ( array, 100, false ), { path: [0, 'bar'], property: undefined, value: [123], isInsideProperty: false, isInsideValue: true } );
 
       t.deepEqual ( lookup ( array, 101, false ), { path: [0, 'bar', 0], property: 0, value: 123, isInsideProperty: true, isInsideValue: true } );
+
+    });
+
+    it ( 'supports partial objects where only the property is available', t => {
+
+      const lookup = ( target, index, usePartialScanning ) => _.omit ( JSONC.lookup ( target, index, usePartialScanning ), ['token'] ); //TODO: Actually match against the token object too
+
+      const {objectPartial} = Fixtures.lookup;
+
+      t.deepEqual ( lookup ( objectPartial, 3, true ), { path: ['foo'], property: 'foo', value: undefined, isInsideProperty: true, isInsideValue: false } );
 
     });
 
