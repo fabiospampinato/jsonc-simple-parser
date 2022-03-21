@@ -7,6 +7,8 @@ const fs = require ( 'fs' ),
       JSON5 = require ( 'json5' ),
       VSCJSONC = require ( 'jsonc-parser' ),
       {default: JSONC} = require ( '../dist' ),
+      sampleInvalidPath = path.resolve ( __dirname, 'sample_invalid.json' ),
+      sampleInvalid = fs.readFileSync ( sampleInvalidPath, 'utf8' ),
       sampleWithCommentsPath = path.resolve ( __dirname, 'sample_with_comments.json' ),
       sampleWithComments = fs.readFileSync ( sampleWithCommentsPath, 'utf8' ),
       sampleWithErrorsPath = path.resolve ( __dirname, 'sample_with_errors.json' ),
@@ -22,6 +24,37 @@ benchmark.defaultOptions = Object.assign ( benchmark.defaultOptions, {
 });
 
 benchmark.group ( 'Parse', () => {
+
+  benchmark.group ( 'Invalid', () => {
+
+    benchmark ({
+      name: 'JSONC.parse',
+      fn: () => {
+        try {
+          JSONC.parse ( sampleInvalid );
+        } catch {}
+      }
+    });
+
+    benchmark ({
+      name: 'JSONC.parse (VSC)',
+      fn: () => {
+        try {
+          VSCJSONC.parse ( sampleInvalid );
+        } catch {}
+      }
+    });
+
+    benchmark ({
+      name: 'JSON5.parse',
+      fn: () => {
+        try {
+          JSON5.parse ( sampleInvalid );
+        } catch {}
+      }
+    });
+
+  });
 
   benchmark.group ( 'With Comments', () => {
 
