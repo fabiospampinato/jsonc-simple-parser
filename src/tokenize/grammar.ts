@@ -50,7 +50,7 @@ const grammar = ( tokens: ParseTokensMap ) => {
     = $.Passthrough`${Trivia}*`;
 
   const _Merged
-    = $.Whitespace`${/(?:[ \t\r\n]+|\/\/.*|\/\*[^]*?\*\/)*/}`;
+    = $.Whitespace`${/(?:[ \t\r\n]|\/\/.*|\/\*[^]*?\*\/)*/}`;
 
   const _ = $.Newline === $.Whitespace && $.Whitespace === $.CommentLine && $.CommentLine === $.CommentBlock ? _Merged : _Separated;
 
@@ -91,7 +91,7 @@ const grammar = ( tokens: ParseTokensMap ) => {
   /* STRING */
 
   const String
-    = $.String`${/"(?:[^\u0000-\u001F\\"]+|\\["bfnrt\\/]|\\u[0-9a-fA-F]{4})*"/}`;
+    = $.String`${/"(?:[^\u0000-\u001F\\"]|\\["bfnrt\\/]|\\u[0-9a-fA-F]{4})*"/}`;
 
   /* ARRAY */
 
