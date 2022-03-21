@@ -9,7 +9,7 @@
     "clean": "rimraf dist",
     "compile": "tsc --skipLibCheck && tstei",
     "compile:watch": "tsc --skipLibCheck --watch",
-    "test:test262:init": "git clone git@github.com:tc39/test262.git ./test/test262 && rm ./test/test262/test/built-ins/JSON/parse/name.js",
+    "test:test262:init": "git clone https://github.com/tc39/test262.git ./test/test262 && rm ./test/test262/test/built-ins/JSON/parse/name.js",
     "test:test262:prelude": "{ echo 'var module = {}, exports = {};' && esbuild dist/index.js --bundle --format=cjs --minify --target=es2016 && echo 'JSON.parse=module.exports.default.parse;JSON.stringify=module.exports.default.stringify;' } > test/test262/prelude.js",
     "test:test262:execute": "test262-harness -t 8 --prelude ./test/test262/prelude.js ./test/test262/test/built-ins/JSON/parse/*.js ./test/test262/test/built-ins/JSON/stringify/*.js",
     "test:test262": "npm run test:test262:prelude && npm run test:test262:execute",
