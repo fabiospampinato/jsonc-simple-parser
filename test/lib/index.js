@@ -2,11 +2,11 @@
 /* IMPORT */
 
 import _ from 'lodash';
-import {describe} from 'ava-spec';
-import JSONC from '../../dist';
-import Fixtures from './fixtures';
+import {describe} from 'fava';
+import JSONC from '../../dist/index.js';
+import Fixtures from './fixtures.js';
 
-/* JSONC */
+/* MAIN */
 
 describe ( 'JSONC', () => {
 

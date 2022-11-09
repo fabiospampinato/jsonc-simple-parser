@@ -4,7 +4,7 @@
 import Context from '../tokenize/context';
 import parser from './parser';
 
-/* STRIP */
+/* MAIN */
 
 const strip = ( text: string ): string => {
 

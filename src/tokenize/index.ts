@@ -1,11 +1,11 @@
 
 /* IMPORT */
 
-import {AST} from '../types';
+import type {AST} from '../types';
 import Context from './context';
 import parser from './parser';
 
-/* TOKENIZE */
+/* MAIN */
 
 const tokenize = ( text: string, limit?: number ): AST => {
 

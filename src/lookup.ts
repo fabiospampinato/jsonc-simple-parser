@@ -1,22 +1,22 @@
 
 /* IMPORT */
 
-import {JSONValue} from './types';
-import {ChildToken, ParentToken, AST} from './types';
-import {LookupChildToken, LookupParentToken, LookupPath, LookupResultToken, LookupResult} from './types';
+import type {JSONValue} from './types';
+import type {ChildToken, ParentToken, AST} from './types';
+import type {LookupChildToken, LookupParentToken, LookupPath, LookupResultToken, LookupResult} from './types';
 import detokenize from './detokenize';
 import parse from './parse';
 import tokenize from './tokenize';
 import Utils from './utils';
 
-/* LOOKUP */
+/* MAIN */
 
 //FIXME: This is wonky, it should be much more robust, it should probably be rewritten from scratch
 
 const getLookupToken = ( ast: AST, position: number ): LookupChildToken | null => {
 
-  let tokenPosition: LookupChildToken | null = null,
-      offsetCurrent = 0;
+  let tokenPosition: LookupChildToken | null = null;
+  let offsetCurrent = 0;
 
   const checkPositionToken = ( token: LookupChildToken ): void => {
     if ( token.start > position ) return;
@@ -114,8 +114,8 @@ const getLookupIsInsideValue = ( token: LookupChildToken | null ): boolean => {
 
   if ( !token ) return false;
 
-  const isParentEmpty = !token.parent?.children.length,
-        parentType = token.parent?.type;
+  const isParentEmpty = !token.parent?.children.length;
+  const parentType = token.parent?.type;
 
   if ( parentType === 'Object' ) return isParentEmpty || Utils.isTokenDelimiter ( token ) || ( Utils.isTokenLiteral ( token ) && Utils.isOdd ( token.index ) );
 
@@ -165,16 +165,16 @@ const getLookupValue = ( token: LookupChildToken | null, isInsideValue: boolean,
 
 const lookup = ( text: string, position: number, usePartialScanning: boolean = true ): LookupResult => {
 
-  const limit = usePartialScanning ? position : Infinity,
-        ast = tokenize ( text, limit ),
-        token = getLookupToken ( ast, position ),
-        path = getLookupPath ( token ),
-        isInsideProperty = getLookupIsInsideProperty ( token ),
-        isInsideValue = getLookupIsInsideValue ( token ),
-        property = getLookupProperty ( token, isInsideProperty ),
-        value = getLookupValue ( token, isInsideValue, usePartialScanning ),
-        t = token ? { type: token.type, start: token.start, end: token.end, source: token.source } as LookupResultToken : undefined,
-        result: LookupResult = {path, property, value, token: t, isInsideProperty, isInsideValue};
+  const limit = usePartialScanning ? position : Infinity;
+  const ast = tokenize ( text, limit );
+  const token = getLookupToken ( ast, position );
+  const path = getLookupPath ( token );
+  const isInsideProperty = getLookupIsInsideProperty ( token );
+  const isInsideValue = getLookupIsInsideValue ( token );
+  const property = getLookupProperty ( token, isInsideProperty );
+  const value = getLookupValue ( token, isInsideValue, usePartialScanning );
+  const t = token ? { type: token.type, start: token.start, end: token.end, source: token.source } as LookupResultToken : undefined;
+  const result: LookupResult = {path, property, value, token: t, isInsideProperty, isInsideValue};
 
   return result;
 

@@ -1,9 +1,9 @@
 
 /* IMPORT */
 
-import {Token, LookupToken} from './types';
+import type {Token, LookupToken} from './types';
 
-/* DETOKENIZE */
+/* MAIN */
 
 const detokenize = ( token: Token | LookupToken ): string => {
 

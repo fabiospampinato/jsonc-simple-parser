@@ -2,9 +2,9 @@
 /* IMPORT */
 
 import {match} from 'reghex';
-import {DelimiterToken, IgnoredToken, LiteralToken, Token, LookupToken} from './types';
+import type {DelimiterToken, IgnoredToken, LiteralToken, Token, ParseTokensMap, LookupToken} from './types';
 
-/* UTILS */
+/* MAIN */
 
 const Utils = {
 
@@ -58,7 +58,7 @@ const Utils = {
 
   },
 
-  tokens2matchers: <Tokens, Matchers> ( tokens: Tokens ): Matchers => {
+  tokens2matchers: <Tokens extends ParseTokensMap, Matchers> ( tokens: Tokens ): Matchers => {
 
     const cache = new Map ();
 

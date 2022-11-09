@@ -1,5 +1,5 @@
 
-/* CONTEXT */
+/* MAIN */
 
 const Context = {
 

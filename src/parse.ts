@@ -7,7 +7,7 @@ import strip from './strip';
 
 const _parse = JSON.parse;
 
-/* PARSE */
+/* MAIN */
 
 const parse = ( text: string, reviver?: ( this: any, key: string, value: any ) => any ): any => {
 

@@ -1,7 +1,7 @@
 
 /* IMPORT */
 
-import {ParseTokensMap, ChildToken, ParentToken, NewlineToken, WhitespaceToken, CommentLineToken, CommentBlockToken, CommaToken, CommaTrailingToken, ColonToken, NullToken, TrueToken, FalseToken, NumberToken, StringToken, ArrayOpenToken, ArrayCloseToken, ArrayToken, ObjectOpenToken, ObjectCloseToken, ObjectToken, RootToken, Token} from '../types';
+import type {ParseTokensMap, ChildToken, ParentToken, NewlineToken, WhitespaceToken, CommentLineToken, CommentBlockToken, CommaToken, CommaTrailingToken, ColonToken, NullToken, TrueToken, FalseToken, NumberToken, StringToken, ArrayOpenToken, ArrayCloseToken, ArrayToken, ObjectOpenToken, ObjectCloseToken, ObjectToken, RootToken, Token} from '../types';
 import Utils from '../utils';
 import Context from './context';
 
@@ -18,7 +18,7 @@ const makeParent = <T extends ParentToken> ( type: string ) => ( values: (Token 
   return {type, children} as T;
 };
 
-/* TOKENS */
+/* MAIN */
 
 const Tokens: ParseTokensMap = {
   EarlyReturn: (): [] | undefined => {

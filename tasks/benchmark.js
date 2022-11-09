@@ -1,22 +1,23 @@
 
 /* IMPORT */
 
-const fs = require ( 'fs' ),
-      path = require ( 'path' ),
-      benchmark = require ( 'benchloop' ),
-      JSON5 = require ( 'json5' ),
-      VSCJSONC = require ( 'jsonc-parser' ),
-      {default: JSONC} = require ( '../dist' ),
-      sampleInvalidPath = path.resolve ( __dirname, 'sample_invalid.json' ),
-      sampleInvalid = fs.readFileSync ( sampleInvalidPath, 'utf8' ),
-      sampleWithCommentsPath = path.resolve ( __dirname, 'sample_with_comments.json' ),
-      sampleWithComments = fs.readFileSync ( sampleWithCommentsPath, 'utf8' ),
-      sampleWithErrorsPath = path.resolve ( __dirname, 'sample_with_errors.json' ),
-      sampleWithErrors = fs.readFileSync ( sampleWithErrorsPath, 'utf8' ),
-      sampleWithoutCommentsPath = path.resolve ( __dirname, 'sample_without_comments.json' ),
-      sampleWithoutComments = fs.readFileSync ( sampleWithoutCommentsPath, 'utf8' );
+import benchmark from 'benchloop';
+import JSON5 from 'json5';
+import VSCJSONC from 'jsonc-parser';
+import fs from 'node:fs';
+import path from 'node:path';
+import JSONC from '../dist/index.js';
 
-/* BENCHMARK */
+const sampleInvalidPath = path.resolve ( process.cwd (), 'tasks', 'sample_invalid.json' );
+const sampleInvalid = fs.readFileSync ( sampleInvalidPath, 'utf8' );
+const sampleWithCommentsPath = path.resolve ( process.cwd (), 'tasks', 'sample_with_comments.json' );
+const sampleWithComments = fs.readFileSync ( sampleWithCommentsPath, 'utf8' );
+const sampleWithErrorsPath = path.resolve ( process.cwd (), 'tasks', 'sample_with_errors.json' );
+const sampleWithErrors = fs.readFileSync ( sampleWithErrorsPath, 'utf8' );
+const sampleWithoutCommentsPath = path.resolve ( process.cwd (), 'tasks', 'sample_without_comments.json' );
+const sampleWithoutComments = fs.readFileSync ( sampleWithoutCommentsPath, 'utf8' );
+
+/* MAIN */
 
 benchmark.defaultOptions = Object.assign ( benchmark.defaultOptions, {
   iterations: 7,

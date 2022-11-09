@@ -9,7 +9,7 @@ import strip from './strip';
 import tokenize from './tokenize';
 import validate from './validate';
 
-/* EXPORT */
+/* MAIN */
 
 const JSONC = {
   ast: {

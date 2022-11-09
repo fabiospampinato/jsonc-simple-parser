@@ -3,7 +3,7 @@
 
 import parse from './parse';
 
-/* VALIDATE */
+/* MAIN */
 
 const validate = ( text: string ): boolean => {
 

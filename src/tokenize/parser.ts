@@ -5,7 +5,7 @@ import {parse} from 'reghex';
 import grammar from './grammar';
 import tokens from './tokens';
 
-/* PARSER */
+/* MAIN */
 
 const parser = parse ( grammar ( tokens ) );
 

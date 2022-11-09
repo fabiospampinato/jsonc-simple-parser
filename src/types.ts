@@ -5,7 +5,7 @@ type JSONValue = import ( 'type-fest' ).JsonValue;
 
 type Matcher = ( quasis: TemplateStringsArray, ...re: (string | RegExp | (() => string | RegExp))[] ) => any;
 
-/* TOKENS */
+/* MAIN */
 
 type ChildToken = {
   type: string,
@@ -157,8 +157,8 @@ type LookupResult = {
 
 /* EXPORT */
 
-export {JSONValue};
-export {ChildToken, ParentToken, NewlineToken, WhitespaceToken, CommentLineToken, CommentBlockToken, CommaToken, CommaTrailingToken, ColonToken, NullToken, TrueToken, FalseToken, NumberToken, StringToken, ArrayOpenToken, ArrayCloseToken, ArrayToken, ObjectOpenToken, ObjectCloseToken, ObjectToken, RootToken};
-export {AbstractToken, IgnoredToken, LiteralToken, TriviaToken, OpenToken, CloseToken, DelimiterToken, SeparationToken, SpecialToken, Token, AST};
-export {ParseTokensMap, ParseMatchersMap};
-export {LookupChildToken, LookupParentToken, LookupToken, LookupPath, LookupResultToken, LookupResult};
+export type {JSONValue};
+export type {ChildToken, ParentToken, NewlineToken, WhitespaceToken, CommentLineToken, CommentBlockToken, CommaToken, CommaTrailingToken, ColonToken, NullToken, TrueToken, FalseToken, NumberToken, StringToken, ArrayOpenToken, ArrayCloseToken, ArrayToken, ObjectOpenToken, ObjectCloseToken, ObjectToken, RootToken};
+export type {AbstractToken, IgnoredToken, LiteralToken, TriviaToken, OpenToken, CloseToken, DelimiterToken, SeparationToken, SpecialToken, Token, AST};
+export type {ParseTokensMap, ParseMatchersMap};
+export type {LookupChildToken, LookupParentToken, LookupToken, LookupPath, LookupResultToken, LookupResult};

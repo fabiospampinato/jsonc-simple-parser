@@ -1,10 +1,10 @@
 
 /* IMPORT */
 
-import {ParseTokensMap, ParseMatchersMap} from '../types';
+import type {ParseTokensMap, ParseMatchersMap} from '../types';
 import Utils from '../utils';
 
-/* GRAMMAR */
+/* MAIN */
 
 const grammar = ( tokens: ParseTokensMap ) => {
 

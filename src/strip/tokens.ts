@@ -1,7 +1,7 @@
 
 /* IMPORT */
 
-import {ParseTokensMap} from '../types';
+import type {ParseTokensMap} from '../types';
 import Context from '../tokenize/context';
 import TokenizeTokens from '../tokenize/tokens';
 
@@ -24,7 +24,7 @@ const Unwrapped = ( quasis: string[], token: RegExp | string ): RegExp | string 
 
 Unwrapped.unwrapped = true;
 
-/* TOKENS */
+/* MAIN */
 
 const Tokens: ParseTokensMap = {
   ...TokenizeTokens,
