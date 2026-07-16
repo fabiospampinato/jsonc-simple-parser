@@ -13,7 +13,5 @@ Thumbs.db
 dist
 node_modules
 package-lock.json
-test/test262/.git
-test/test262/test
-test/test262/harness
-test/test262/prelude.js
+test/test262/*
+!test/test262/index.test.ts
