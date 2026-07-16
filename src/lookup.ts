@@ -32,15 +32,24 @@ const getLookupToken = (ast: AST, position: number): LookupChildToken | null => 
     tokenPosition = token;
   };
 
+  const coversPosition = (start: number, end: number): boolean => {
+    return start <= position && end > position - 1;
+  };
+
   const parseChild = (
     token: ChildToken,
     parent: LookupParentToken | null,
     depth: number,
     index: number,
-  ): LookupChildToken => {
+  ): LookupChildToken | null => {
     const { type, source } = token;
     const start = offsetCurrent;
     const end = (offsetCurrent += source.length);
+
+    if (!Utils.isTokenLiteral(token) && !coversPosition(start, end)) {
+      return null;
+    }
+
     const ltoken: LookupChildToken = { type, source, token, parent, depth, index, start, end };
     checkPositionToken(ltoken);
     return ltoken;
@@ -53,13 +62,43 @@ const getLookupToken = (ast: AST, position: number): LookupChildToken | null => 
     index: number,
   ): LookupParentToken => {
     const { type } = token;
-    const ltoken: LookupParentToken = { type, children: [], token, parent, depth, index };
-    ltoken.children = token.children
-      .map((child: ChildToken | ParentToken, index: number) =>
-        parseToken(child, ltoken, depth + 1, index),
-      )
-      .filter(Utils.isTokenLiteral);
-    ltoken.children.forEach((token, index) => (token.index = index));
+    const start = offsetCurrent;
+    const ltoken: LookupParentToken = {
+      type,
+      children: [],
+      token,
+      parent,
+      depth,
+      index,
+      start,
+      end: start,
+    };
+    let literalIndex = 0;
+
+    for (let i = 0, l = token.children.length; i < l; i++) {
+      const childToken = token.children[i];
+
+      if ("children" in childToken) {
+        const child = parseParent(childToken, ltoken, depth + 1, literalIndex);
+        child.index = literalIndex++;
+        ltoken.children.push(child);
+        continue;
+      }
+
+      if (Utils.isTokenLiteral(childToken)) {
+        const child = parseChild(childToken, ltoken, depth + 1, literalIndex);
+        if (child) {
+          child.index = literalIndex++;
+          ltoken.children.push(child);
+        }
+        continue;
+      }
+
+      // Ignored/delimiter: advance offset; allocate only if it covers `position`
+      parseChild(childToken, ltoken, depth + 1, i);
+    }
+
+    ltoken.end = offsetCurrent;
     return ltoken;
   };
 
@@ -68,7 +107,7 @@ const getLookupToken = (ast: AST, position: number): LookupChildToken | null => 
     parent: LookupParentToken | null,
     depth: number,
     index: number,
-  ): LookupChildToken | LookupParentToken => {
+  ): LookupChildToken | LookupParentToken | null => {
     if ("children" in token) return parseParent(token, parent, depth, index);
     return parseChild(token, parent, depth, index);
   };
@@ -164,6 +203,7 @@ const getLookupValue = (
   token: LookupChildToken | null,
   isInsideValue: boolean,
   usePartialScanning: boolean,
+  text: string,
 ): JSONValue | undefined => {
   if (!isInsideValue || !token) return;
 
@@ -177,7 +217,7 @@ const getLookupValue = (
 
   if (parent.type !== "Array" && parent.type !== "Object") return;
 
-  return parse(detokenize(parent.token));
+  return parse(text.slice(parent.start, parent.end));
 };
 
 const lookup = (
@@ -192,7 +232,7 @@ const lookup = (
   const isInsideProperty = getLookupIsInsideProperty(token);
   const isInsideValue = getLookupIsInsideValue(token);
   const property = getLookupProperty(token, isInsideProperty);
-  const value = getLookupValue(token, isInsideValue, usePartialScanning);
+  const value = getLookupValue(token, isInsideValue, usePartialScanning, text);
   const t = token
     ? ({
         type: token.type,

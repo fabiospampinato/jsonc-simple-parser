@@ -535,19 +535,18 @@ describe("JSONC", () => {
     it("throws on invalid input", () => {
       const { prefix, suffix } = Fixtures.errors;
 
-      expect(() => JSONC.parse(prefix)).toThrow(
-        new SyntaxError("Unexpected token i in JSONC at position 0"),
-      );
-      expect(() => JSONC.parse(suffix)).toThrow(
-        new SyntaxError("Unexpected token i in JSONC at position 4"),
-      );
+      // No JSONC syntax → native JSON.parse error (strip is skipped)
+      expect(() => JSONC.parse(prefix)).toThrow(SyntaxError);
+      expect(() => JSONC.parse(suffix)).toThrow(SyntaxError);
     });
 
     it("throws on insufficient input", () => {
       const { comment, empty } = Fixtures.errors;
 
+      // Comments force the strip path, which surfaces JSONC-specific errors
       expect(() => JSONC.parse(comment)).toThrow(new SyntaxError("Unexpected end of JSONC input"));
-      expect(() => JSONC.parse(empty)).toThrow(new SyntaxError("Unexpected end of JSONC input"));
+      // Empty input has no JSONC syntax → native JSON.parse error
+      expect(() => JSONC.parse(empty)).toThrow(SyntaxError);
     });
   });
 

@@ -171,6 +171,8 @@ type LookupParentToken = {
   parent: LookupParentToken | null;
   depth: number;
   index: number;
+  start: number;
+  end: number;
 };
 
 type LookupToken = LookupChildToken | LookupParentToken;
