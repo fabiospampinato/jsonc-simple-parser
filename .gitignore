@@ -13,5 +13,4 @@ Thumbs.db
 dist
 node_modules
 package-lock.json
-test/test262/*
-!test/test262/index.test.ts
+test/test262
