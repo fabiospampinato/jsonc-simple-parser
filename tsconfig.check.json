@@ -4,7 +4,19 @@
     "noEmit": true,
     "emitDeclarationOnly": false,
     "declaration": false,
-    "rootDir": "."
+    "rootDir": ".",
+    "allowJs": true
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "tasks/**/*.ts", "scripts/**/*.ts", "vitest.config.ts", "rolldown.config.ts"],
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "test/**/*.d.ts",
+    "test/**/*.mjs",
+    "tasks/**/*.ts",
+    "scripts/**/*.ts",
+    "scripts/**/*.d.ts",
+    "scripts/**/*.mjs",
+    "vitest.config.ts",
+    "rolldown.config.ts"
+  ]
 }

@@ -1,24 +1,23 @@
-
 /* IMPORT */
 
-import type {ParseTokensMap} from '../types';
-import Context from '../tokenize/context';
-import TokenizeTokens from '../tokenize/tokens';
+import type { ParseTokensMap } from "../types";
+import Context from "../tokenize/context";
+import TokenizeTokens from "../tokenize/tokens";
 
 /* HELPERS */
 
-const Delete = ( values: [string] ): string => {
+const Delete = (values: [string]): string => {
   Context.offset += values[0].length;
-  return '';
+  return "";
 };
 
-const Passthrough = ( values: string[] ): string => {
-  const source = values.join ( '' );
+const Passthrough = (values: string[]): string => {
+  const source = values.join("");
   Context.offset += source.length;
   return source;
 };
 
-const Unwrapped = ( _quasis: string[], token: RegExp | string ): RegExp | string => {
+const Unwrapped = (_quasis: string[], token: RegExp | string): RegExp | string => {
   return token;
 };
 
@@ -47,7 +46,7 @@ const Tokens: ParseTokensMap = {
   ObjectOpen: Unwrapped,
   ObjectClose: Unwrapped,
   Object: Passthrough,
-  Root: Passthrough
+  Root: Passthrough,
 };
 
 /* EXPORT */

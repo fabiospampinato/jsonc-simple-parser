@@ -1,8 +1,6 @@
-
 /* MAIN */
 
 const Context = {
-
   /* VARIABLES */
 
   offset: 0,
@@ -10,13 +8,10 @@ const Context = {
 
   /* API */
 
-  init: ( limit: number = Infinity ): void => {
-
+  init: (limit: number = Infinity): void => {
     Context.offset = 0;
     Context.offsetMax = limit;
-
-  }
-
+  },
 };
 
 /* EXPORT */

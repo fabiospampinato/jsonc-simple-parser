@@ -1,9 +1,10 @@
+/* oxlint-disable no-unused-vars -- $262 is injected into the test262 VM context */
 function print(...args) {
   console.log(...args);
 }
-var vm = require('vm');
+var vm = require("vm");
 var $262 = {
-  global: Function('return this')(),
+  global: Function("return this")(),
   gc() {
     return gc();
   },
@@ -41,13 +42,13 @@ var $262 = {
         vm.runInESHostContext(code, { displayErrors });
       }
 
-      return { type: 'normal', value: undefined };
+      return { type: "normal", value: undefined };
     } catch (e) {
-      return { type: 'throw', value: e };
+      return { type: "throw", value: e };
     }
   },
   destroy() {
     /* noop */
   },
-  source: $SOURCE
+  source: $SOURCE,
 };

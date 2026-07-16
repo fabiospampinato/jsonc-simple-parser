@@ -1,16 +1,13 @@
-
 /* IMPORT */
 
-import type {Token, LookupToken} from './types';
+import type { Token, LookupToken } from "./types";
 
 /* MAIN */
 
-const detokenize = ( token: Token | LookupToken ): string => {
+const detokenize = (token: Token | LookupToken): string => {
+  if ("source" in token) return token.source;
 
-  if ( 'source' in token ) return token.source;
-
-  return token.children.map ( detokenize ).join ( '' );
-
+  return token.children.map(detokenize).join("");
 };
 
 /* EXPORT */

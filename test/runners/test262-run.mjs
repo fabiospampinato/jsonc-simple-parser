@@ -1,29 +1,40 @@
-import { spawn } from 'node:child_process';
-import { mkdtempSync, readFileSync, readdirSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { dirname, join, relative, resolve, sep } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { execPath } from 'node:process';
-import minimatch from 'minimatch';
-import Test262Stream from 'test262-stream';
+import { spawn } from "node:child_process";
+import {
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join, relative, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
+import { execPath } from "node:process";
+import minimatch from "minimatch";
+import Test262Stream from "test262-stream";
 
 const DEFAULT_TIMEOUT = 10000;
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const nodeRuntime = readFileSync(join(__dirname, 'test262-node-runtime.js'), 'utf8');
+const nodeRuntime = readFileSync(join(__dirname, "test262-node-runtime.js"), "utf8");
 
 function inception(runtime) {
-  return runtime.replace('$SOURCE', JSON.stringify(runtime.replace('$SOURCE', '""')));
+  return runtime.replace("$SOURCE", JSON.stringify(runtime.replace("$SOURCE", '""')));
 }
 
 function compileForNode(code) {
-  const runtime = inception(nodeRuntime.replace(/\r?\n/g, '').replace(/\s+/gm, ' '));
-  const prologue = code.match(/^("[^\r\n"]*"|'[^\r\n']*'|[\s\r\n;]*|\/\*[\w\W]*?\*\/|\/\/[^\n]*\n)*/);
-  const withRuntime = prologue ? prologue[0] + runtime + code.slice(prologue[0].length) : runtime + code;
+  const runtime = inception(nodeRuntime.replace(/\r?\n/g, "").replace(/\s+/gm, " "));
+  const prologue = code.match(
+    /^("[^\r\n"]*"|'[^\r\n']*'|[\s\r\n;]*|\/\*[\w\W]*?\*\/|\/\/[^\n]*\n)*/,
+  );
+  const withRuntime = prologue
+    ? prologue[0] + runtime + code.slice(prologue[0].length)
+    : runtime + code;
   const withDestroy = `${withRuntime}\n;$262.destroy();`;
 
   const escaped = JSON.stringify(withDestroy)
-    .replace(/\u2028/g, '\\u2028')
-    .replace(/\u2029/g, '\\u2029');
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
 
   return `
 Function("return this;")().require = require;
@@ -69,7 +80,7 @@ function validate(test) {
   const result = test.rawResult;
   const isNegative = test.attrs.flags.negative || test.attrs.negative;
   const isAsync = test.attrs.flags.async;
-  let ranToFinish = isAsync ? result.stdout.indexOf('Test262:Async') > -1 : false;
+  let ranToFinish = isAsync ? result.stdout.indexOf("Test262:Async") > -1 : false;
 
   if (result.stderr) {
     ranToFinish = result.error ? true : false;
@@ -82,12 +93,12 @@ function validate(test) {
   }
 
   if (result.timeout) {
-    return { pass: false, message: 'Test timed out' };
+    return { pass: false, message: "Test timed out" };
   }
 
   if (!isNegative) {
     if (result.error !== null) {
-      if (result.error.name === 'Test262Error') {
+      if (result.error.name === "Test262Error") {
         return { pass: false, message: result.error.message };
       }
 
@@ -101,7 +112,7 @@ function validate(test) {
       let message = result.stderr || result.stdout;
 
       if (isAsync && !message) {
-        message = 'Test did not run to completion';
+        message = "Test did not run to completion";
       }
 
       return { pass: false, message };
@@ -111,7 +122,9 @@ function validate(test) {
   }
 
   if (test.attrs.flags.negative) {
-    return result.error ? { pass: true } : { pass: false, message: 'Expected test to throw some error' };
+    return result.error
+      ? { pass: true }
+      : { pass: false, message: "Expected test to throw some error" };
   }
 
   if (!result.error) {
@@ -132,27 +145,31 @@ function validate(test) {
 }
 
 function runTest(contents, timeout) {
-  const tempDir = mkdtempSync(join(tmpdir(), 'test262-'));
-  const tempFile = join(tempDir, 'test.js');
+  const tempDir = mkdtempSync(join(tmpdir(), "test262-"));
+  const tempFile = join(tempDir, "test.js");
   const code = compileForNode(contents);
 
   writeFileSync(tempFile, code);
 
-  return new Promise(resolvePromise => {
-    const child = spawn(execPath, ['--expose-gc', tempFile], { stdio: ['ignore', 'pipe', 'pipe'] });
-    let stdout = '';
-    let stderr = '';
+  return new Promise((resolvePromise) => {
+    const child = spawn(execPath, ["--expose-gc", tempFile], { stdio: ["ignore", "pipe", "pipe"] });
+    let stdout = "";
+    let stderr = "";
     let timedOut = false;
 
     const timer = setTimeout(() => {
       timedOut = true;
-      child.kill('SIGKILL');
+      child.kill("SIGKILL");
     }, timeout);
 
-    child.stdout.on('data', chunk => { stdout += chunk; });
-    child.stderr.on('data', chunk => { stderr += chunk; });
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk;
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk;
+    });
 
-    child.on('close', () => {
+    child.on("close", () => {
       clearTimeout(timer);
       unlinkSync(tempFile);
 
@@ -168,7 +185,7 @@ function runTest(contents, timeout) {
 
 function findTest262Root(path) {
   if (/\*/.test(path)) {
-    return findTest262Root(resolve(path, '..'));
+    return findTest262Root(resolve(path, ".."));
   }
 
   let current = resolve(path);
@@ -178,7 +195,7 @@ function findTest262Root(path) {
       current = dirname(current);
     }
   } catch (error) {
-    if (error?.code !== 'ENOENT') {
+    if (error?.code !== "ENOENT") {
       throw error;
     }
 
@@ -189,15 +206,15 @@ function findTest262Root(path) {
     const contents = readdirSync(current);
 
     if (
-      contents.includes('README.md') &&
-      contents.includes('package.json') &&
-      contents.includes('test') &&
-      contents.includes('harness')
+      contents.includes("README.md") &&
+      contents.includes("package.json") &&
+      contents.includes("test") &&
+      contents.includes("harness")
     ) {
       return current;
     }
 
-    const parent = resolve(current, '..');
+    const parent = resolve(current, "..");
 
     if (parent === current) {
       throw new Error(`Unable to find test262 root from ${path}`);
@@ -209,11 +226,11 @@ function findTest262Root(path) {
 
 function patternsToDirectories(patterns) {
   return patterns
-    .map(pattern => {
+    .map((pattern) => {
       const parts = [];
 
-      pattern.split('/').every(part => {
-        if (part.includes('*') || part.slice(-3).toLowerCase() === '.js') {
+      pattern.split("/").every((part) => {
+        if (part.includes("*") || part.slice(-3).toLowerCase() === ".js") {
           return false;
         }
 
@@ -221,42 +238,47 @@ function patternsToDirectories(patterns) {
         return true;
       });
 
-      return `${parts.join('/')}/`;
+      return `${parts.join("/")}/`;
     })
-    .filter(name => name !== '')
-    .filter((name, index, all) => all.every((other, otherIndex) => {
-      if (name === other) {
-        return index <= otherIndex;
-      }
+    .filter((name) => name !== "")
+    .filter((name, index, all) =>
+      all.every((other, otherIndex) => {
+        if (name === other) {
+          return index <= otherIndex;
+        }
 
-      const min = Math.min(name.length, other.length);
+        const min = Math.min(name.length, other.length);
 
-      if (name.slice(0, min) === other.slice(0, min)) {
-        return name.length < other.length;
-      }
+        if (name.slice(0, min) === other.slice(0, min)) {
+          return name.length < other.length;
+        }
 
-      return true;
-    }))
-    .map(dir => dir.slice(0, -1));
+        return true;
+      }),
+    )
+    .map((dir) => dir.slice(0, -1));
 }
 
 async function collectTests({ preludePath, patterns }) {
-  const preludeContents = preludePath ? readFileSync(preludePath, 'utf8') : '';
+  const preludeContents = preludePath ? readFileSync(preludePath, "utf8") : "";
   const test262Dir = findTest262Root(patterns[0]);
-  const test262Version = JSON.parse(readFileSync(join(test262Dir, 'package.json'), 'utf8')).version;
-  const globPatterns = patterns.map(pattern => relative(test262Dir, resolve(pattern)).split(sep).join('/'));
+  const test262Version = JSON.parse(readFileSync(join(test262Dir, "package.json"), "utf8")).version;
+  const globPatterns = patterns.map((pattern) =>
+    relative(test262Dir, resolve(pattern)).split(sep).join("/"),
+  );
   const paths = patternsToDirectories(globPatterns);
   const stream = new Test262Stream(test262Dir, { paths, acceptVersion: test262Version });
   const tests = [];
 
   await new Promise((resolvePromise, reject) => {
-    stream.on('data', test => {
-      if (!globPatterns.some(pattern => minimatch(test.file, pattern))) {
+    stream.on("data", (test) => {
+      if (!globPatterns.some((pattern) => minimatch(test.file, pattern))) {
         return;
       }
 
       if (preludeContents && test.insertionIndex !== -1) {
-        test.contents = test.contents.slice(0, test.insertionIndex) +
+        test.contents =
+          test.contents.slice(0, test.insertionIndex) +
           preludeContents +
           test.contents.slice(test.insertionIndex);
       }
@@ -265,8 +287,8 @@ async function collectTests({ preludePath, patterns }) {
       tests.push(test);
     });
 
-    stream.on('error', reject);
-    stream.on('end', resolvePromise);
+    stream.on("error", reject);
+    stream.on("end", resolvePromise);
   });
 
   return tests;
@@ -277,7 +299,7 @@ export async function runTest262({
   patterns,
   threads = 8,
   timeout = DEFAULT_TIMEOUT,
-  reporter = 'simple',
+  reporter = "simple",
 }) {
   const tests = await collectTests({ preludePath, patterns });
   let index = 0;
@@ -286,7 +308,7 @@ export async function runTest262({
   let lastPassed = true;
 
   function clearPassed() {
-    if (!lastPassed || reporter === 'silent') {
+    if (!lastPassed || reporter === "silent") {
       return;
     }
 
@@ -294,7 +316,7 @@ export async function runTest262({
       process.stdout.clearLine(0);
       process.stdout.cursorTo(0);
     } else {
-      process.stdout.write('\n');
+      process.stdout.write("\n");
     }
   }
 
@@ -308,7 +330,7 @@ export async function runTest262({
       if (test.result.pass) {
         passed++;
 
-        if (reporter === 'simple') {
+        if (reporter === "simple") {
           clearPassed();
           lastPassed = true;
           process.stdout.write(`PASS ${test.file}`);
@@ -322,12 +344,12 @@ export async function runTest262({
 
         failures.push(failure);
 
-        if (reporter === 'simple') {
+        if (reporter === "simple") {
           clearPassed();
           lastPassed = false;
           console.log(`FAIL ${test.file} (${test.scenario})`);
           console.log(`  ${test.result.message}`);
-          console.log('');
+          console.log("");
         }
       }
     }
@@ -335,7 +357,7 @@ export async function runTest262({
 
   await Promise.all(Array.from({ length: threads }, () => worker()));
 
-  if (reporter === 'simple') {
+  if (reporter === "simple") {
     clearPassed();
     console.log(`Ran ${passed + failures.length} tests`);
     console.log(`${passed} passed`);
@@ -357,17 +379,17 @@ function parseCliArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
 
-    if (arg === '-t' || arg === '--threads') {
+    if (arg === "-t" || arg === "--threads") {
       threads = Number(argv[++i]);
       continue;
     }
 
-    if (arg === '--prelude') {
+    if (arg === "--prelude") {
       preludePath = argv[++i];
       continue;
     }
 
-    if (arg.startsWith('-')) {
+    if (arg.startsWith("-")) {
       continue;
     }
 
@@ -383,7 +405,9 @@ if (isMain) {
   const { threads, preludePath, patterns } = parseCliArgs(process.argv.slice(2));
 
   if (!patterns.length) {
-    console.error('Usage: node test/runners/test262-run.mjs [-t threads] --prelude <file> <test-glob> [...]');
+    console.error(
+      "Usage: node test/runners/test262-run.mjs [-t threads] --prelude <file> <test-glob> [...]",
+    );
     process.exit(1);
   }
 

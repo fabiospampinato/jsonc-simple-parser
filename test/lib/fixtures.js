@@ -1,12 +1,11 @@
-
 /* MAIN */
 
 const Fixtures = {
   errors: {
-    comment: '// asd',
-    empty: '',
-    prefix: 'invalid 123',
-    suffix: '123 invalid'
+    comment: "// asd",
+    empty: "",
+    prefix: "invalid 123",
+    suffix: "123 invalid",
   },
   ast: {
     input: `
@@ -28,452 +27,452 @@ const Fixtures = {
       /* EXAMPLE */ /* YES */
     `,
     output: {
-      type: 'Root',
+      type: "Root",
       children: [
         {
-          type: 'Newline',
-          source: '\n'
+          type: "Newline",
+          source: "\n",
         },
         {
-          type: 'Whitespace',
-          source: '      '
+          type: "Whitespace",
+          source: "      ",
         },
         {
-          type: 'CommentLine',
-          source: '// Example // Yes'
+          type: "CommentLine",
+          source: "// Example // Yes",
         },
         {
-          type: 'Newline',
-          source: '\n'
+          type: "Newline",
+          source: "\n",
         },
         {
-          type: 'Whitespace',
-          source: '      '
+          type: "Whitespace",
+          source: "      ",
         },
         {
-          type: 'CommentBlock',
-          source: '/* EXAMPLE */'
+          type: "CommentBlock",
+          source: "/* EXAMPLE */",
         },
         {
-          type: 'Whitespace',
-          source: ' '
+          type: "Whitespace",
+          source: " ",
         },
         {
-          type: 'CommentBlock',
-          source: '/* YES */'
+          type: "CommentBlock",
+          source: "/* YES */",
         },
         {
-          type: 'Newline',
-          source: '\n'
+          type: "Newline",
+          source: "\n",
         },
         {
-          type: 'Whitespace',
-          source: '      '
+          type: "Whitespace",
+          source: "      ",
         },
         {
-          type: 'Object',
+          type: "Object",
           children: [
             {
-              type: 'ObjectOpen',
-              source: '{'
+              type: "ObjectOpen",
+              source: "{",
             },
             {
-              type: 'Newline',
-              source: '\n'
+              type: "Newline",
+              source: "\n",
             },
             {
-              type: 'Whitespace',
-              source: '        '
+              type: "Whitespace",
+              source: "        ",
             },
             {
-              type: 'String',
-              source: '"one"'
+              type: "String",
+              source: '"one"',
             },
             {
-              type: 'Colon',
-              source: ':'
+              type: "Colon",
+              source: ":",
             },
             {
-              type: 'Whitespace',
-              source: ' '
+              type: "Whitespace",
+              source: " ",
             },
             {
-              type: 'Object',
+              type: "Object",
               children: [
                 {
-                  type: 'ObjectOpen',
-                  source: '{'
+                  type: "ObjectOpen",
+                  source: "{",
                 },
                 {
-                  type: 'ObjectClose',
-                  source: '}'
-                }
-              ]
+                  type: "ObjectClose",
+                  source: "}",
+                },
+              ],
             },
             {
-              type: 'Comma',
-              source: ','
+              type: "Comma",
+              source: ",",
             },
             {
-              type: 'Newline',
-              source: '\n'
+              type: "Newline",
+              source: "\n",
             },
             {
-              type: 'Whitespace',
-              source: '        '
+              type: "Whitespace",
+              source: "        ",
             },
             {
-              type: 'String',
-              source: '"two"'
+              type: "String",
+              source: '"two"',
             },
             {
-              type: 'Whitespace',
-              source: ' '
+              type: "Whitespace",
+              source: " ",
             },
             {
-              type: 'Colon',
-              source: ':'
+              type: "Colon",
+              source: ":",
             },
             {
-              type: 'Object',
+              type: "Object",
               children: [
                 {
-                  type: 'ObjectOpen',
-                  source: '{'
+                  type: "ObjectOpen",
+                  source: "{",
                 },
                 {
-                  type: 'ObjectClose',
-                  source: '}'
-                }
-              ]
+                  type: "ObjectClose",
+                  source: "}",
+                },
+              ],
             },
             {
-              type: 'Comma',
-              source: ','
+              type: "Comma",
+              source: ",",
             },
             {
-              type: 'Newline',
-              source: '\n'
+              type: "Newline",
+              source: "\n",
             },
             {
-              type: 'Whitespace',
-              source: '        '
+              type: "Whitespace",
+              source: "        ",
             },
             {
-              type: 'String',
-              source: '"three"'
+              type: "String",
+              source: '"three"',
             },
             {
-              type: 'Colon',
-              source: ':'
+              type: "Colon",
+              source: ":",
             },
             {
-              type: 'Whitespace',
-              source: ' '
+              type: "Whitespace",
+              source: " ",
             },
             {
-              type: 'Object',
+              type: "Object",
               children: [
                 {
-                  type: 'ObjectOpen',
-                  source: '{'
+                  type: "ObjectOpen",
+                  source: "{",
                 },
                 {
-                  type: 'Newline',
-                  source: '\n'
+                  type: "Newline",
+                  source: "\n",
                 },
                 {
-                  type: 'Whitespace',
-                  source: '          '
+                  type: "Whitespace",
+                  source: "          ",
                 },
                 {
-                  type: 'String',
-                  source: '"one"'
+                  type: "String",
+                  source: '"one"',
                 },
                 {
-                  type: 'Colon',
-                  source: ':'
+                  type: "Colon",
+                  source: ":",
                 },
                 {
-                  type: 'Whitespace',
-                  source: ' '
+                  type: "Whitespace",
+                  source: " ",
                 },
                 {
-                  type: 'Null',
-                  source: 'null'
+                  type: "Null",
+                  source: "null",
                 },
                 {
-                  type: 'Comma',
-                  source: ','
+                  type: "Comma",
+                  source: ",",
                 },
                 {
-                  type: 'Newline',
-                  source: '\n'
+                  type: "Newline",
+                  source: "\n",
                 },
                 {
-                  type: 'Whitespace',
-                  source: '          '
+                  type: "Whitespace",
+                  source: "          ",
                 },
                 {
-                  type: 'String',
-                  source: '"two"'
+                  type: "String",
+                  source: '"two"',
                 },
                 {
-                  type: 'Whitespace',
-                  source: ' '
+                  type: "Whitespace",
+                  source: " ",
                 },
                 {
-                  type: 'Colon',
-                  source: ':'
+                  type: "Colon",
+                  source: ":",
                 },
                 {
-                  type: 'True',
-                  source: 'true'
+                  type: "True",
+                  source: "true",
                 },
                 {
-                  type: 'Comma',
-                  source: ','
+                  type: "Comma",
+                  source: ",",
                 },
                 {
-                  type: 'Newline',
-                  source: '\n'
+                  type: "Newline",
+                  source: "\n",
                 },
                 {
-                  type: 'Whitespace',
-                  source: '          '
+                  type: "Whitespace",
+                  source: "          ",
                 },
                 {
-                  type: 'String',
-                  source: '"three"'
+                  type: "String",
+                  source: '"three"',
                 },
                 {
-                  type: 'Colon',
-                  source: ':'
+                  type: "Colon",
+                  source: ":",
                 },
                 {
-                  type: 'Whitespace',
-                  source: ' '
+                  type: "Whitespace",
+                  source: " ",
                 },
                 {
-                  type: 'False',
-                  source: 'false'
+                  type: "False",
+                  source: "false",
                 },
                 {
-                  type: 'Comma',
-                  source: ','
+                  type: "Comma",
+                  source: ",",
                 },
                 {
-                  type: 'Newline',
-                  source: '\n'
+                  type: "Newline",
+                  source: "\n",
                 },
                 {
-                  type: 'Whitespace',
-                  source: '          '
+                  type: "Whitespace",
+                  source: "          ",
                 },
                 {
-                  type: 'String',
-                  source: '"four"'
+                  type: "String",
+                  source: '"four"',
                 },
                 {
-                  type: 'Colon',
-                  source: ':'
+                  type: "Colon",
+                  source: ":",
                 },
                 {
-                  type: 'Whitespace',
-                  source: ' '
+                  type: "Whitespace",
+                  source: " ",
                 },
                 {
-                  type: 'String',
-                  source: '"asd\\n\\u0022\\""'
+                  type: "String",
+                  source: '"asd\\n\\u0022\\""',
                 },
                 {
-                  type: 'Comma',
-                  source: ','
+                  type: "Comma",
+                  source: ",",
                 },
                 {
-                  type: 'Newline',
-                  source: '\n'
+                  type: "Newline",
+                  source: "\n",
                 },
                 {
-                  type: 'Whitespace',
-                  source: '          '
+                  type: "Whitespace",
+                  source: "          ",
                 },
                 {
-                  type: 'String',
-                  source: '"five"'
+                  type: "String",
+                  source: '"five"',
                 },
                 {
-                  type: 'Colon',
-                  source: ':'
+                  type: "Colon",
+                  source: ":",
                 },
                 {
-                  type: 'Whitespace',
-                  source: ' '
+                  type: "Whitespace",
+                  source: " ",
                 },
                 {
-                  type: 'Number',
-                  source: '-123.123e10'
+                  type: "Number",
+                  source: "-123.123e10",
                 },
                 {
-                  type: 'Comma',
-                  source: ','
+                  type: "Comma",
+                  source: ",",
                 },
                 {
-                  type: 'Newline',
-                  source: '\n'
+                  type: "Newline",
+                  source: "\n",
                 },
                 {
-                  type: 'Whitespace',
-                  source: '          '
+                  type: "Whitespace",
+                  source: "          ",
                 },
                 {
-                  type: 'String',
-                  source: '"six"'
+                  type: "String",
+                  source: '"six"',
                 },
                 {
-                  type: 'Colon',
-                  source: ':'
+                  type: "Colon",
+                  source: ":",
                 },
                 {
-                  type: 'Whitespace',
-                  source: ' '
+                  type: "Whitespace",
+                  source: " ",
                 },
                 {
-                  type: 'Array',
+                  type: "Array",
                   children: [
                     {
-                      type: 'ArrayOpen',
-                      source: '['
+                      type: "ArrayOpen",
+                      source: "[",
                     },
                     {
-                      type: 'Whitespace',
-                      source: ' '
+                      type: "Whitespace",
+                      source: " ",
                     },
                     {
-                      type: 'Number',
-                      source: '123'
+                      type: "Number",
+                      source: "123",
                     },
                     {
-                      type: 'Comma',
-                      source: ','
+                      type: "Comma",
+                      source: ",",
                     },
                     {
-                      type: 'Whitespace',
-                      source: ' '
+                      type: "Whitespace",
+                      source: " ",
                     },
                     {
-                      type: 'True',
-                      source: 'true'
+                      type: "True",
+                      source: "true",
                     },
                     {
-                      type: 'Comma',
-                      source: ','
+                      type: "Comma",
+                      source: ",",
                     },
                     {
-                      type: 'Whitespace',
-                      source: ' '
+                      type: "Whitespace",
+                      source: " ",
                     },
                     {
-                      type: 'Array',
+                      type: "Array",
                       children: [
                         {
-                          type: 'ArrayOpen',
-                          source: '['
+                          type: "ArrayOpen",
+                          source: "[",
                         },
                         {
-                          type: 'ArrayClose',
-                          source: ']'
-                        }
-                      ]
+                          type: "ArrayClose",
+                          source: "]",
+                        },
+                      ],
                     },
                     {
-                      type: 'CommaTrailing',
-                      source: ','
+                      type: "CommaTrailing",
+                      source: ",",
                     },
                     {
-                      type: 'ArrayClose',
-                      source: ']'
-                    }
-                  ]
+                      type: "ArrayClose",
+                      source: "]",
+                    },
+                  ],
                 },
                 {
-                  type: 'CommaTrailing',
-                  source: ','
+                  type: "CommaTrailing",
+                  source: ",",
                 },
                 {
-                  type: 'Newline',
-                  source: '\n'
+                  type: "Newline",
+                  source: "\n",
                 },
                 {
-                  type: 'Whitespace',
-                  source: '        '
+                  type: "Whitespace",
+                  source: "        ",
                 },
                 {
-                  type: 'ObjectClose',
-                  source: '}'
-                }
-              ]
+                  type: "ObjectClose",
+                  source: "}",
+                },
+              ],
             },
             {
-              type: 'CommaTrailing',
-              source: ','
+              type: "CommaTrailing",
+              source: ",",
             },
             {
-              type: 'Newline',
-              source: '\n'
+              type: "Newline",
+              source: "\n",
             },
             {
-              type: 'Whitespace',
-              source: '      '
+              type: "Whitespace",
+              source: "      ",
             },
             {
-              type: 'ObjectClose',
-              source: '}'
-            }
-          ]
+              type: "ObjectClose",
+              source: "}",
+            },
+          ],
         },
         {
-          type: 'Newline',
-          source: '\n'
+          type: "Newline",
+          source: "\n",
         },
         {
-          type: 'Whitespace',
-          source: '      '
+          type: "Whitespace",
+          source: "      ",
         },
         {
-          type: 'CommentLine',
-          source: '// Example // Yes'
+          type: "CommentLine",
+          source: "// Example // Yes",
         },
         {
-          type: 'Newline',
-          source: '\n'
+          type: "Newline",
+          source: "\n",
         },
         {
-          type: 'Whitespace',
-          source: '      '
+          type: "Whitespace",
+          source: "      ",
         },
         {
-          type: 'CommentBlock',
-          source: '/* EXAMPLE */'
+          type: "CommentBlock",
+          source: "/* EXAMPLE */",
         },
         {
-          type: 'Whitespace',
-          source: ' '
+          type: "Whitespace",
+          source: " ",
         },
         {
-          type: 'CommentBlock',
-          source: '/* YES */'
+          type: "CommentBlock",
+          source: "/* YES */",
         },
         {
-          type: 'Newline',
-          source: '\n'
+          type: "Newline",
+          source: "\n",
         },
         {
-          type: 'Whitespace',
-          source: '    '
-        }
-      ]
-    }
+          type: "Whitespace",
+          source: "    ",
+        },
+      ],
+    },
   },
   lookup: {
     object: `
@@ -504,7 +503,7 @@ const Fixtures = {
       ]
       // Example // Yes
       /* EXAMPLE */ /* YES */
-    `
+    `,
   },
   parse: {
     input: `
@@ -532,11 +531,11 @@ const Fixtures = {
         one: null,
         two: true,
         three: false,
-        four: "asd\n\u0022\"",
+        four: 'asd\n\u0022"',
         five: -123.123e10,
-        six: [123, true, []]
-      }
-    }
+        six: [123, true, []],
+      },
+    },
   },
   strip: {
     input: `
@@ -548,8 +547,8 @@ const Fixtures = {
         /* TRAILING COMMAS ABOVE */
       }
     `,
-    output: '{"foo":123,"// tricky":"/* tricky */","bar":[1,2,3]}'
-  }
+    output: '{"foo":123,"// tricky":"/* tricky */","bar":[1,2,3]}',
+  },
 };
 
 /* EXPORT */

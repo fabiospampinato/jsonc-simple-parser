@@ -1,18 +1,15 @@
-
 /* IMPORT */
 
-import type {AST} from '../types';
-import Context from './context';
-import parser from './parser';
+import type { AST } from "../types";
+import Context from "./context";
+import parser from "./parser";
 
 /* MAIN */
 
-const tokenize = ( text: string, limit?: number ): AST => {
+const tokenize = (text: string, limit?: number): AST => {
+  Context.init(limit);
 
-  Context.init ( limit );
-
-  return parser ( text );
-
+  return parser(text);
 };
 
 /* EXPORT */

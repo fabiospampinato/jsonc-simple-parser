@@ -23,7 +23,7 @@ npm install --save jsonc-simple-parser
 ## Usage
 
 ```ts
-import JSONC from 'jsonc-simple-parser';
+import JSONC from "jsonc-simple-parser";
 
 const source = `
   { // This is an example
@@ -35,11 +35,11 @@ const source = `
 
 const result = {
   foo: 123,
-  bar: [1, 2, 3]
+  bar: [1, 2, 3],
 };
 
-JSONC.parse ( source ); // => returns an object that's deeply equal to `result`
-JSONC.stringify ( result ); // => same as calling `JSON.stringify`
+JSONC.parse(source); // => returns an object that's deeply equal to `result`
+JSONC.stringify(result); // => same as calling `JSON.stringify`
 ```
 
 ## License

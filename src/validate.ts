@@ -1,24 +1,17 @@
-
 /* IMPORT */
 
-import parse from './parse';
+import parse from "./parse";
 
 /* MAIN */
 
-const validate = ( text: string ): boolean => {
-
+const validate = (text: string): boolean => {
   try {
-
-    parse ( text );
+    parse(text);
 
     return true;
-
   } catch {
-
     return false;
-
   }
-
 };
 
 /* EXPORT */
