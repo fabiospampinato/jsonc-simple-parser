@@ -11,43 +11,6 @@ const DEFAULT_TIMEOUT = 10000;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const nodeRuntime = readFileSync(join(__dirname, 'test262-node-runtime.js'), 'utf8');
 
-const args = process.argv.slice(2);
-let threads = 1;
-let preludePath;
-const patterns = [];
-
-for (let i = 0; i < args.length; i++) {
-  const arg = args[i];
-
-  if (arg === '-t' || arg === '--threads') {
-    threads = Number(args[++i]);
-    continue;
-  }
-
-  if (arg === '--prelude') {
-    preludePath = args[++i];
-    continue;
-  }
-
-  if (arg.startsWith('-')) {
-    continue;
-  }
-
-  patterns.push(arg);
-}
-
-if (!patterns.length) {
-  console.error('Usage: node test/runners/test262-run.mjs [-t threads] --prelude <file> <test-glob> [...]');
-  process.exit(1);
-}
-
-const preludeContents = preludePath ? readFileSync(preludePath, 'utf8') : '';
-const test262Dir = findTest262Root(patterns[0]);
-const test262Version = JSON.parse(readFileSync(join(test262Dir, 'package.json'), 'utf8')).version;
-const globPatterns = patterns.map(pattern => relative(test262Dir, resolve(pattern)).split(sep).join('/'));
-const paths = patternsToDirectories(globPatterns);
-const stream = new Test262Stream(test262Dir, { paths, acceptVersion: test262Version });
-
 function inception(runtime) {
   return runtime.replace('$SOURCE', JSON.stringify(runtime.replace('$SOURCE', '""')));
 }
@@ -175,7 +138,7 @@ function runTest(contents, timeout) {
 
   writeFileSync(tempFile, code);
 
-  return new Promise(resolve => {
+  return new Promise(resolvePromise => {
     const child = spawn(execPath, ['--expose-gc', tempFile], { stdio: ['ignore', 'pipe', 'pipe'] });
     let stdout = '';
     let stderr = '';
@@ -193,12 +156,10 @@ function runTest(contents, timeout) {
       clearTimeout(timer);
       unlinkSync(tempFile);
 
-      const error = parseError(stderr);
-
-      resolve({
+      resolvePromise({
         stdout,
         stderr,
-        error,
+        error: parseError(stderr),
         timeout: timedOut,
       });
     });
@@ -279,7 +240,13 @@ function patternsToDirectories(patterns) {
     .map(dir => dir.slice(0, -1));
 }
 
-async function collectTests() {
+async function collectTests({ preludePath, patterns }) {
+  const preludeContents = preludePath ? readFileSync(preludePath, 'utf8') : '';
+  const test262Dir = findTest262Root(patterns[0]);
+  const test262Version = JSON.parse(readFileSync(join(test262Dir, 'package.json'), 'utf8')).version;
+  const globPatterns = patterns.map(pattern => relative(test262Dir, resolve(pattern)).split(sep).join('/'));
+  const paths = patternsToDirectories(globPatterns);
+  const stream = new Test262Stream(test262Dir, { paths, acceptVersion: test262Version });
   const tests = [];
 
   await new Promise((resolvePromise, reject) => {
@@ -305,14 +272,21 @@ async function collectTests() {
   return tests;
 }
 
-async function runPool(tests, concurrency, timeout) {
+export async function runTest262({
+  preludePath,
+  patterns,
+  threads = 8,
+  timeout = DEFAULT_TIMEOUT,
+  reporter = 'simple',
+}) {
+  const tests = await collectTests({ preludePath, patterns });
   let index = 0;
   let passed = 0;
-  let failed = 0;
+  const failures = [];
   let lastPassed = true;
 
   function clearPassed() {
-    if (!lastPassed) {
+    if (!lastPassed || reporter === 'silent') {
       return;
     }
 
@@ -333,33 +307,89 @@ async function runPool(tests, concurrency, timeout) {
 
       if (test.result.pass) {
         passed++;
-        clearPassed();
-        lastPassed = true;
-        process.stdout.write(`PASS ${test.file}`);
+
+        if (reporter === 'simple') {
+          clearPassed();
+          lastPassed = true;
+          process.stdout.write(`PASS ${test.file}`);
+        }
       } else {
-        failed++;
-        clearPassed();
-        lastPassed = false;
-        console.log(`FAIL ${test.file} (${test.scenario})`);
-        console.log(`  ${test.result.message}`);
-        console.log('');
+        const failure = {
+          file: test.file,
+          scenario: test.scenario,
+          message: test.result.message,
+        };
+
+        failures.push(failure);
+
+        if (reporter === 'simple') {
+          clearPassed();
+          lastPassed = false;
+          console.log(`FAIL ${test.file} (${test.scenario})`);
+          console.log(`  ${test.result.message}`);
+          console.log('');
+        }
       }
     }
   }
 
-  await Promise.all(Array.from({ length: concurrency }, () => worker()));
+  await Promise.all(Array.from({ length: threads }, () => worker()));
 
-  clearPassed();
-  console.log(`Ran ${passed + failed} tests`);
-  console.log(`${passed} passed`);
-  console.log(`${failed} failed`);
+  if (reporter === 'simple') {
+    clearPassed();
+    console.log(`Ran ${passed + failures.length} tests`);
+    console.log(`${passed} passed`);
+    console.log(`${failures.length} failed`);
+  }
 
-  return failed;
+  return {
+    passed,
+    failed: failures.length,
+    failures,
+  };
 }
 
-const tests = await collectTests();
-const failed = await runPool(tests, threads, DEFAULT_TIMEOUT);
+function parseCliArgs(argv) {
+  let threads = 1;
+  let preludePath;
+  const patterns = [];
 
-if (failed > 0) {
-  process.exitCode = 1;
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+
+    if (arg === '-t' || arg === '--threads') {
+      threads = Number(argv[++i]);
+      continue;
+    }
+
+    if (arg === '--prelude') {
+      preludePath = argv[++i];
+      continue;
+    }
+
+    if (arg.startsWith('-')) {
+      continue;
+    }
+
+    patterns.push(arg);
+  }
+
+  return { threads, preludePath, patterns };
+}
+
+const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMain) {
+  const { threads, preludePath, patterns } = parseCliArgs(process.argv.slice(2));
+
+  if (!patterns.length) {
+    console.error('Usage: node test/runners/test262-run.mjs [-t threads] --prelude <file> <test-glob> [...]');
+    process.exit(1);
+  }
+
+  const { failed } = await runTest262({ preludePath, patterns, threads });
+
+  if (failed > 0) {
+    process.exitCode = 1;
+  }
 }

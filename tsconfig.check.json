@@ -7,5 +7,4 @@
     "rootDir": "."
   },
   "include": ["src/**/*.ts", "test/**/*.ts", "tasks/**/*.ts", "scripts/**/*.ts", "vitest.config.ts", "rolldown.config.ts"],
-  "exclude": ["dist", "node_modules", "test/test262"]
 }
