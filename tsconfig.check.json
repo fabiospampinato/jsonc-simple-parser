@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "declaration": false,
+    "rootDir": ".",
+    "allowJs": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "test/**/*.d.ts",
+    "test/**/*.mjs",
+    "tasks/**/*.ts",
+    "scripts/**/*.ts",
+    "scripts/**/*.d.ts",
+    "scripts/**/*.mjs",
+    "vitest.config.ts",
+    "rolldown.config.ts"
+  ]
+}

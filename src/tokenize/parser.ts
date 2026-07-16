@@ -1,13 +1,13 @@
-
 /* IMPORT */
 
-import {parse} from 'reghex';
-import grammar from './grammar';
-import tokens from './tokens';
+import { parse } from "reghex";
+import type { AST } from "../types";
+import grammar from "./grammar";
+import tokens from "./tokens";
 
 /* MAIN */
 
-const parser = parse ( grammar ( tokens ) );
+const parser = parse(grammar(tokens)) as (input: string) => AST;
 
 /* EXPORT */
 

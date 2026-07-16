@@ -1,0 +1,4 @@
+dist
+node_modules
+test/test262
+tasks/sample_with_errors.json

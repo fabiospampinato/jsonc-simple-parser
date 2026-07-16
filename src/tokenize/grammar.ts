@@ -1,146 +1,116 @@
-
 /* IMPORT */
 
-import type {ParseTokensMap, ParseMatchersMap} from '../types';
-import Utils from '../utils';
+import type { ParseTokensMap, ParseMatchersMap } from "../types";
+import Utils from "../utils";
 
 /* MAIN */
 
-const grammar = ( tokens: ParseTokensMap ) => {
-
+const grammar = (tokens: ParseTokensMap) => {
   /* MATCHERS */
 
-  const $ = Utils.tokens2matchers <ParseTokensMap, ParseMatchersMap> ( tokens );
+  const $ = Utils.tokens2matchers<ParseTokensMap, ParseMatchersMap>(tokens);
 
   /* EARLY RETURN */
 
-  const EarlyReturn
-    = $.EarlyReturn`${''}`;
+  const EarlyReturn = $.EarlyReturn`${""}`;
 
   /* INSUFFICIENT */
 
-  const Insufficient
-    = $.Insufficient`${/[^]?/}`;
+  const Insufficient = $.Insufficient`${/[^]?/}`;
 
   /* INVALID */
 
-  const Invalid
-    = $.Invalid`${/[^]/}`;
+  const Invalid = $.Invalid`${/[^]/}`;
 
   /* TRIVIA */
 
-  const Newline
-    = $.Newline`${/\r?\n|\r/}`;
+  const Newline = $.Newline`${/\r?\n|\r/}`;
 
-  const Whitespace
-    = $.Whitespace`${/[ \t]+/}`;
+  const Whitespace = $.Whitespace`${/[ \t]+/}`;
 
-  const CommentLine
-    = $.CommentLine`${/\/\/.*/}`;
+  const CommentLine = $.CommentLine`${/\/\/.*/}`;
 
-  const CommentBlock
-    = $.CommentBlock`${/\/\*[^]*?\*\//}`;
+  const CommentBlock = $.CommentBlock`${/\/\*[^]*?\*\//}`;
 
-  const Trivia
-    = $.Passthrough`${Newline} | ${Whitespace} | ${CommentLine} | ${CommentBlock}`;
+  const Trivia = $.Passthrough`${Newline} | ${Whitespace} | ${CommentLine} | ${CommentBlock}`;
 
   /* _ */
 
-  const _Separated
-    = $.Passthrough`${Trivia}*`;
+  const _Separated = $.Passthrough`${Trivia}*`;
 
-  const _Merged
-    = $.Whitespace`${/(?:[ \t\r\n]|\/\/.*|\/\*[^]*?\*\/)*/}`;
+  const _Merged = $.Whitespace`${/(?:[ \t\r\n]|\/\/.*|\/\*[^]*?\*\/)*/}`;
 
-  const _ = $.Newline === $.Whitespace && $.Whitespace === $.CommentLine && $.CommentLine === $.CommentBlock ? _Merged : _Separated;
+  const _ =
+    $.Newline === $.Whitespace && $.Whitespace === $.CommentLine && $.CommentLine === $.CommentBlock
+      ? _Merged
+      : _Separated;
 
   /* COMMA */
 
-  const Comma
-    = $.Comma`${','}`;
+  const Comma = $.Comma`${","}`;
 
-  const CommaTrailing
-    = $.CommaTrailing`${','}`;
+  const CommaTrailing = $.CommaTrailing`${","}`;
 
   /* COLON */
 
-  const Colon
-    = $.Colon`${':'}`;
+  const Colon = $.Colon`${":"}`;
 
   /* NULL */
 
-  const Null
-    = $.Null`${'null'}`;
+  const Null = $.Null`${"null"}`;
 
   /* BOOLEAN */
 
-  const True
-    = $.True`${'true'}`;
+  const True = $.True`${"true"}`;
 
-  const False
-    = $.False`${'false'}`;
+  const False = $.False`${"false"}`;
 
-  const Boolean
-    = $.Passthrough`${True} | ${False}`;
+  const Boolean = $.Passthrough`${True} | ${False}`;
 
   /* NUMBER */
 
-  const Number
-    = $.Number`${/-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][-+]?\d+)?/}`;
+  const Number = $.Number`${/-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][-+]?\d+)?/}`;
 
   /* STRING */
 
-  const String
-    = $.String`${/"(?:[^\u0000-\u001F\\"]|\\["bfnrt\\/]|\\u[0-9a-fA-F]{4})*"/}`;
+  // oxlint-disable-next-line no-control-regex -- JSON string grammar requires matching U+0000–U+001F
+  const String = $.String`${/"(?:[^\u0000-\u001F\\"]|\\["bfnrt\\/]|\\u[0-9a-fA-F]{4})*"/}`;
 
   /* ARRAY */
 
-  const ArrayOpen
-    = $.ArrayOpen`${'['}`;
+  const ArrayOpen = $.ArrayOpen`${"["}`;
 
-  const ArrayClose
-    = $.ArrayClose`${']'}`;
+  const ArrayClose = $.ArrayClose`${"]"}`;
 
-  const ArrayMember
-    = $.Passthrough`${_} ${() => Literal} ${_}`;
+  const ArrayMember: any = $.Passthrough`${_} ${() => Literal} ${_}`;
 
-  const ArrayMembers
-    = $.Passthrough`${ArrayMember} (!${EarlyReturn} ${Comma} ${ArrayMember})* ${CommaTrailing}?`;
+  const ArrayMembers: any = $.Passthrough`${ArrayMember} (!${EarlyReturn} ${Comma} ${ArrayMember})* ${CommaTrailing}?`;
 
-  const Array
-    = $.Array`${ArrayOpen} ${_} ${ArrayMembers}? ${_} (${EarlyReturn} | ${ArrayClose})`;
+  const Array: any = $.Array`${ArrayOpen} ${_} ${ArrayMembers}? ${_} (${EarlyReturn} | ${ArrayClose})`;
 
   /* OBJECT */
 
-  const ObjectOpen
-    = $.ObjectOpen`${'{'}`;
+  const ObjectOpen = $.ObjectOpen`${"{"}`;
 
-  const ObjectClose
-    = $.ObjectClose`${'}'}`;
+  const ObjectClose = $.ObjectClose`${"}"}`;
 
-  const ObjectMember
-    = $.Passthrough`${_} ${String} (${EarlyReturn} | ${_} ${Colon} ${_} ${() => Literal} ${_})`;
+  const ObjectMember: any = $.Passthrough`${_} ${String} (${EarlyReturn} | ${_} ${Colon} ${_} ${() => Literal} ${_})`;
 
-  const ObjectMembers
-    = $.Passthrough`${ObjectMember} (!${EarlyReturn} ${Comma} ${ObjectMember})* ${CommaTrailing}?`;
+  const ObjectMembers: any = $.Passthrough`${ObjectMember} (!${EarlyReturn} ${Comma} ${ObjectMember})* ${CommaTrailing}?`;
 
-  const Object
-    = $.Object`${ObjectOpen} ${_} ${ObjectMembers}? ${_} (${EarlyReturn} | ${ObjectClose})`;
+  const Object: any = $.Object`${ObjectOpen} ${_} ${ObjectMembers}? ${_} (${EarlyReturn} | ${ObjectClose})`;
 
   /* LITERAL */
 
-  const Literal
-    = $.Passthrough`${Null} | ${Boolean} | ${Number} | ${String} | ${Object} | ${Array}`;
+  const Literal: any = $.Passthrough`${Null} | ${Boolean} | ${Number} | ${String} | ${Object} | ${Array}`;
 
   /* ROOT */
 
-  const Root
-    = $.Root`${_} (${Literal} | ${Insufficient}) (${EarlyReturn} | ${_} ${Invalid}?)`;
+  const Root = $.Root`${_} (${Literal} | ${Insufficient}) (${EarlyReturn} | ${_} ${Invalid}?)`;
 
   /* RETURN */
 
   return Root;
-
 };
 
 /* EXPORT */

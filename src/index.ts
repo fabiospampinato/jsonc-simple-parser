@@ -1,26 +1,25 @@
-
 /* IMPORT */
 
-import detokenize from './detokenize';
-import lookup from './lookup';
-import parse from './parse';
-import stringify from './stringify';
-import strip from './strip';
-import tokenize from './tokenize';
-import validate from './validate';
+import detokenize from "./detokenize";
+import lookup from "./lookup";
+import parse from "./parse";
+import stringify from "./stringify";
+import strip from "./strip";
+import tokenize from "./tokenize";
+import validate from "./validate";
 
 /* MAIN */
 
 const JSONC = {
   ast: {
     parse: tokenize,
-    stringify: detokenize
+    stringify: detokenize,
   },
   lookup,
   parse,
   stringify,
   strip,
-  validate
+  validate,
 };
 
 /* EXPORT */

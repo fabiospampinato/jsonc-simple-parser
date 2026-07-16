@@ -1,0 +1,94 @@
+{
+  "label": "after",
+  "node": "v24.16.0",
+  "platform": "win32 x64",
+  "date": "2026-07-16T23:36:41.651Z",
+  "samples": {
+    "invalidBytes": 64,
+    "withCommentsBytes": 100017,
+    "withoutCommentsBytes": 99974,
+    "withErrorsBytes": 96702
+  },
+  "results": [
+    {
+      "name": "parse.invalid",
+      "meanMs": 0.0028,
+      "p50Ms": 0.0025,
+      "p95Ms": 0.0045,
+      "hz": 354044.96,
+      "samples": 200
+    },
+    {
+      "name": "parse.withComments",
+      "meanMs": 1.9314,
+      "p50Ms": 1.9194,
+      "p95Ms": 2.2899,
+      "hz": 517.75,
+      "samples": 40
+    },
+    {
+      "name": "parse.withoutComments",
+      "meanMs": 0.1273,
+      "p50Ms": 0.1231,
+      "p95Ms": 0.1286,
+      "hz": 7858.16,
+      "samples": 80
+    },
+    {
+      "name": "parse.nativeBaseline",
+      "meanMs": 0.1244,
+      "p50Ms": 0.1239,
+      "p95Ms": 0.1282,
+      "hz": 8040.2,
+      "samples": 80
+    },
+    {
+      "name": "lookup.start",
+      "meanMs": 0.0358,
+      "p50Ms": 0.0296,
+      "p95Ms": 0.0647,
+      "hz": 27894.78,
+      "samples": 100
+    },
+    {
+      "name": "lookup.middle",
+      "meanMs": 3.4544,
+      "p50Ms": 3.2971,
+      "p95Ms": 4.5393,
+      "hz": 289.48,
+      "samples": 40
+    },
+    {
+      "name": "lookup.end",
+      "meanMs": 7.5652,
+      "p50Ms": 7.3656,
+      "p95Ms": 9.3179,
+      "hz": 132.18,
+      "samples": 40
+    },
+    {
+      "name": "lookup.fullScanMiddle",
+      "meanMs": 8.5807,
+      "p50Ms": 8.4593,
+      "p95Ms": 10.7491,
+      "hz": 116.54,
+      "samples": 25
+    },
+    {
+      "name": "validate.withComments",
+      "meanMs": 1.8019,
+      "p50Ms": 1.747,
+      "p95Ms": 1.9342,
+      "hz": 554.99,
+      "samples": 40
+    },
+    {
+      "name": "validate.withErrors",
+      "meanMs": 0.4141,
+      "p50Ms": 0.4092,
+      "p95Ms": 0.4486,
+      "hz": 2415.06,
+      "samples": 60
+    }
+  ]
+}

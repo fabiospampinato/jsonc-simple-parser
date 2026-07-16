@@ -1,0 +1,94 @@
+{
+  "label": "before",
+  "node": "v24.16.0",
+  "platform": "win32 x64",
+  "date": "2026-07-16T23:36:43.130Z",
+  "samples": {
+    "invalidBytes": 64,
+    "withCommentsBytes": 100017,
+    "withoutCommentsBytes": 99974,
+    "withErrorsBytes": 96702
+  },
+  "results": [
+    {
+      "name": "parse.invalid",
+      "meanMs": 0.0101,
+      "p50Ms": 0.007,
+      "p95Ms": 0.0095,
+      "hz": 98872.85,
+      "samples": 200
+    },
+    {
+      "name": "parse.withComments",
+      "meanMs": 1.8486,
+      "p50Ms": 1.8224,
+      "p95Ms": 2.3242,
+      "hz": 540.95,
+      "samples": 40
+    },
+    {
+      "name": "parse.withoutComments",
+      "meanMs": 0.1302,
+      "p50Ms": 0.1291,
+      "p95Ms": 0.1381,
+      "hz": 7681.23,
+      "samples": 80
+    },
+    {
+      "name": "parse.nativeBaseline",
+      "meanMs": 0.1308,
+      "p50Ms": 0.1292,
+      "p95Ms": 0.1397,
+      "hz": 7643.87,
+      "samples": 80
+    },
+    {
+      "name": "lookup.start",
+      "meanMs": 0.0378,
+      "p50Ms": 0.0301,
+      "p95Ms": 0.1011,
+      "hz": 26483.75,
+      "samples": 100
+    },
+    {
+      "name": "lookup.middle",
+      "meanMs": 3.5925,
+      "p50Ms": 3.6761,
+      "p95Ms": 4.2131,
+      "hz": 278.36,
+      "samples": 40
+    },
+    {
+      "name": "lookup.end",
+      "meanMs": 7.4788,
+      "p50Ms": 7.361,
+      "p95Ms": 9.1237,
+      "hz": 133.71,
+      "samples": 40
+    },
+    {
+      "name": "lookup.fullScanMiddle",
+      "meanMs": 8.6542,
+      "p50Ms": 8.5561,
+      "p95Ms": 10.4292,
+      "hz": 115.55,
+      "samples": 25
+    },
+    {
+      "name": "validate.withComments",
+      "meanMs": 1.8375,
+      "p50Ms": 1.8031,
+      "p95Ms": 2.0383,
+      "hz": 544.23,
+      "samples": 40
+    },
+    {
+      "name": "validate.withErrors",
+      "meanMs": 1.8487,
+      "p50Ms": 1.8219,
+      "p95Ms": 2.0198,
+      "hz": 540.93,
+      "samples": 60
+    }
+  ]
+}

@@ -1,17 +1,14 @@
-
 /* IMPORT */
 
-import Context from '../tokenize/context';
-import parser from './parser';
+import Context from "../tokenize/context";
+import parser from "./parser";
 
 /* MAIN */
 
-const strip = ( text: string ): string => {
+const strip = (text: string): string => {
+  Context.init();
 
-  Context.init ();
-
-  return parser ( text );
-
+  return parser(text);
 };
 
 /* EXPORT */
