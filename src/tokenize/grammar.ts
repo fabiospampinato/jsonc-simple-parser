@@ -101,13 +101,13 @@ const grammar = ( tokens: ParseTokensMap ) => {
   const ArrayClose
     = $.ArrayClose`${']'}`;
 
-  const ArrayMember
+  const ArrayMember: any
     = $.Passthrough`${_} ${() => Literal} ${_}`;
 
-  const ArrayMembers
+  const ArrayMembers: any
     = $.Passthrough`${ArrayMember} (!${EarlyReturn} ${Comma} ${ArrayMember})* ${CommaTrailing}?`;
 
-  const Array
+  const Array: any
     = $.Array`${ArrayOpen} ${_} ${ArrayMembers}? ${_} (${EarlyReturn} | ${ArrayClose})`;
 
   /* OBJECT */
@@ -118,18 +118,18 @@ const grammar = ( tokens: ParseTokensMap ) => {
   const ObjectClose
     = $.ObjectClose`${'}'}`;
 
-  const ObjectMember
+  const ObjectMember: any
     = $.Passthrough`${_} ${String} (${EarlyReturn} | ${_} ${Colon} ${_} ${() => Literal} ${_})`;
 
-  const ObjectMembers
+  const ObjectMembers: any
     = $.Passthrough`${ObjectMember} (!${EarlyReturn} ${Comma} ${ObjectMember})* ${CommaTrailing}?`;
 
-  const Object
+  const Object: any
     = $.Object`${ObjectOpen} ${_} ${ObjectMembers}? ${_} (${EarlyReturn} | ${ObjectClose})`;
 
   /* LITERAL */
 
-  const Literal
+  const Literal: any
     = $.Passthrough`${Null} | ${Boolean} | ${Number} | ${String} | ${Object} | ${Array}`;
 
   /* ROOT */

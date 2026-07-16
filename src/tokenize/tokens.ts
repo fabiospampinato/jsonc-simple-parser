@@ -23,6 +23,7 @@ const makeParent = <T extends ParentToken> ( type: string ) => ( values: (Token 
 const Tokens: ParseTokensMap = {
   EarlyReturn: (): [] | undefined => {
     if ( Context.offset > Context.offsetMax ) return [];
+    return undefined;
   },
   Insufficient: ( values: [string] ): never => {
     if ( values[0].length ) Tokens.Invalid ( values );

@@ -1,9 +1,7 @@
 
 /* IMPORT */
 
-import type {JSONValue} from './types';
-import type {ChildToken, ParentToken, AST} from './types';
-import type {LookupChildToken, LookupParentToken, LookupPath, LookupResultToken, LookupResult} from './types';
+import type {JSONValue, ChildToken, ParentToken, AST, LookupChildToken, LookupParentToken, LookupPath, LookupResultToken, LookupResult} from './types';
 import detokenize from './detokenize';
 import parse from './parse';
 import tokenize from './tokenize';
@@ -38,7 +36,7 @@ const getLookupToken = ( ast: AST, position: number ): LookupChildToken | null =
   const parseParent = ( token: ParentToken, parent: LookupParentToken | null, depth: number, index: number ): LookupParentToken => {
     const {type} = token;
     const ltoken: LookupParentToken = {type, children: [], token, parent, depth, index};
-    ltoken.children = token.children.map ( ( child, index ) => parseToken ( child, ltoken, depth + 1, index ) ).filter ( Utils.isTokenLiteral );
+    ltoken.children = token.children.map ( ( child: ChildToken | ParentToken, index: number ) => parseToken ( child, ltoken, depth + 1, index ) ).filter ( Utils.isTokenLiteral );
     ltoken.children.forEach ( ( token, index ) => token.index = index );
     return ltoken;
   };
@@ -59,36 +57,37 @@ const getLookupPath = ( token: LookupChildToken | null ): LookupPath => {
   if ( !token ) return [];
 
   const path: LookupPath = [];
+  let walker: LookupChildToken | LookupParentToken | null = token;
 
-  while ( token ) {
+  while ( walker ) {
 
-    const parent = token.parent;
+    const parent: LookupParentToken | null = walker.parent;
 
     if ( !parent ) break;
 
-    if ( Utils.isTokenLiteral ( token ) ) {
+    if ( Utils.isTokenLiteral ( walker ) ) {
 
       if ( parent.type === 'Object' ) {
 
-        if ( Utils.isEven ( token.index ) ) {
+        if ( Utils.isEven ( walker.index ) ) {
 
-          path.unshift ( JSON.parse ( token.source ) );
+          path.unshift ( JSON.parse ( ( walker as LookupChildToken ).source ) );
 
         } else {
 
-          path.unshift ( JSON.parse ( parent.children[token.index - 1].source ) );
+          path.unshift ( JSON.parse ( ( parent.children[walker.index - 1] as LookupChildToken ).source ) );
 
         }
 
       } else if ( parent.type === 'Array' ) {
 
-        path.unshift ( token.index );
+        path.unshift ( walker.index );
 
       }
 
     }
 
-    token = parent;
+    walker = parent;
 
   }
 
@@ -137,11 +136,11 @@ const getLookupProperty = ( token: LookupChildToken | null, isInsideProperty: bo
 
     return parse ( detokenize ( token ) );
 
-  } else {
-
-    if ( parentType === 'Array' ) return token.parent?.index;
-
   }
+
+  if ( parentType === 'Array' ) return token.parent?.index;
+
+  return undefined;
 
 };
 

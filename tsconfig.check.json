@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "declaration": false,
+    "rootDir": "."
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "tasks/**/*.ts", "scripts/**/*.ts", "vitest.config.ts", "rolldown.config.ts"],
+  "exclude": ["dist", "node_modules", "test/test262"]
+}

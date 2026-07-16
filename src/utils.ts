@@ -64,13 +64,14 @@ const Utils = {
 
     return Object.keys ( tokens ).reduce ( ( acc, type ) => {
 
-      const transformer = tokens[type];
+      const key = type as keyof Tokens & keyof Matchers;
+      const transformer = tokens[key] as { unwrapped?: boolean };
 
       const matcher = transformer.unwrapped ? transformer : cache.get ( transformer ) || match ( type, transformer );
 
       cache.set ( transformer, matcher );
 
-      acc[type] = matcher;
+      acc[key] = matcher;
 
       return acc;
 

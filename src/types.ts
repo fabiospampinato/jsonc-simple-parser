@@ -1,7 +1,7 @@
 
 /* HELPERS */
 
-type JSONValue = import ( 'type-fest' ).JsonValue;
+type JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue };
 
 type Matcher = ( quasis: TemplateStringsArray, ...re: (string | RegExp | (() => string | RegExp))[] ) => any;
 

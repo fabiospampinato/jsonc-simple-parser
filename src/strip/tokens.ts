@@ -18,7 +18,7 @@ const Passthrough = ( values: string[] ): string => {
   return source;
 };
 
-const Unwrapped = ( quasis: string[], token: RegExp | string ): RegExp | string => {
+const Unwrapped = ( _quasis: string[], token: RegExp | string ): RegExp | string => {
   return token;
 };
 
